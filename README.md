@@ -83,18 +83,23 @@ Fonctionnalités à rendre:
   - description : Détermine les candidats pouvant bénéficier d’un repêchage en fonction de leurs notes et de leurs résultats scolaires.
 
 - Impression en pdf de toutes les listes (candidats, anononymats,resultats, pv delibeartion)
-  - Impression des listes de :
-    - Candidats
-    - Anonymats
-    - Résultats
-    - Procès-verbaux de délibération
+  
+  - prerequis :
+    - il faut avoir des donnees pour chaque categorie 
+  - description :
+    Impression des listes de :
+      - Candidats
+      - Anonymats (numero de matiere,)
+      - Résultats
+      - Procès-verbaux de délibération
+    
 
 - Statistiques
   - Génération de statistiques détaillées sur les résultats (taux de réussite, répartition des moyennes,     comparaison entre centres, etc.).
 
 - Générateur de relevés de notes pour le 1er et le 2nd tour des épreuves
   - prerequis : notes du 1er et 2nd tour
-  - description : creation automatique d'un relevé de notes pour chaque candidat
+  - description : creation automatique d'un relevé de notes pour chaque candidat et pour chaque tour examen 
 
 - Intégrez les donnees sur le prototype pour faire les tests
   - Vérification du bon fonctionnement du système avec des données de test

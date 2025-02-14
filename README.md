@@ -51,11 +51,9 @@ Matiere:
 
 Fonctionnalités à rendre:
 
-- Paramétrage jury :
+- Paramétrage jury : (Bamba)
   - prérequis : il faut avoir un compte admin
   - description :  Insertion d'un jury
-
-- Crud Candidats :
   - prérequis : Il faut se connecter et être un membre du jury
   - description : on peut insérer, modifier , supprimer et récupérer un candidat
     - Insérer : on doit voir les données du candidats
@@ -63,7 +61,7 @@ Fonctionnalités à rendre:
     - supprimer : Suppression d'un candidat.
     - sélectionner : Récupération d'un candidat spécifique ou de tous les candidats.
 
-- generateur automatique d'anonymat pour la correction et la saisie au 1er et 2nd tour des notes
+- generateur automatique d'anonymat pour la correction et la saisie au 1er et 2nd tour des notes (Bamba)
   - prérequis : il faut avoir des candidats
   - description : Pour chaque examen, le candidat aura un numéro d'identifiant unique pour chaque matières
      Table : < Numéro_candidat_matiere>
@@ -72,7 +70,7 @@ Fonctionnalités à rendre:
         - candidat_id
         - Examen
 
-- Suivi de la délibération pour la 1er et 2nd tour des épreuves
+- Suivi de la délibération pour la 1er et 2nd tour des épreuves ()
   - prerequis : Il faut enregistrer tous les notes
   - description : Les deliveration se fait en meme temps qu'on enregistre les notes
     - Il faut entrer les notes pour chaque matière et calculer les résultats.
@@ -82,7 +80,7 @@ Fonctionnalités à rendre:
   - prerequis : Livret scolaire et note du candidat
   - description : Détermine les candidats pouvant bénéficier d’un repêchage en fonction de leurs notes et de leurs résultats scolaires.
 
-- Impression en pdf de toutes les listes (candidats, anononymats,resultats, pv delibeartion)
+- Impression en pdf de toutes les listes (candidats, anononymats,resultats, pv delibeartion) (Ibrahima Kebe)
   
   - prerequis :
     - il faut avoir des donnees pour chaque categorie 
@@ -97,9 +95,11 @@ Fonctionnalités à rendre:
 - Statistiques
   - Génération de statistiques détaillées sur les résultats (taux de réussite, répartition des moyennes,     comparaison entre centres, etc.).
 
-- Générateur de relevés de notes pour le 1er et le 2nd tour des épreuves
+- Générateur de relevés de notes pour le 1er et le 2nd tour des épreuves (Elhadji)
   - prerequis : notes du 1er et 2nd tour
   - description : creation automatique d'un relevé de notes pour chaque candidat et pour chaque tour examen 
 
 - Intégrez les donnees sur le prototype pour faire les tests
   - Vérification du bon fonctionnement du système avec des données de test
+
+- Interface Desktop : kivy (Ibrahima)=> une prototype

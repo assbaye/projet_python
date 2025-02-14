@@ -1,24 +1,29 @@
-from database.bdd import bdd
+from bdd import bdd
+from hashlib import sha256
 
 
-class Jury :
-
-    def __init__(self):
-        self.bd = bdd()
-        self.create_table()
-    
-    """
-    Creation de la table des taches 
-     - Region_IA
+"""
+  - Region_IA
     - Departement_IEF
     - Localite
     - centre_examen
     - president_jury
     - telephone
     - motdepasse
+"""
 
+class Jury :
+
+    def __init__(self):
+        self.db = bdd()
+        self.create_table()
+    
+    """
+    Creation de la table des jury
+   
     """
     def create_table(self):
+
         self.db.execute(
             """
                 CREATE TABLE IF NOT EXISTS jurys (
@@ -34,3 +39,30 @@ class Jury :
             
             """
         )
+    
+    """ insertion d'un jury """
+
+    def add_jury(self,region_ia,departement_ief,localite,centre_examen,president_jury,telephone,motdepasse):
+        try:
+            password_has = sha256(motdepasse.encode()).hexdigest()
+            self.db.execute("INSERT INTO jurys (region_ia,departement_ief,localite,centre_examen,president_jury,telephone,motdepasse) VALUES (?,?,?,?,?,?,?)",(region_ia,departement_ief,localite,centre_examen,president_jury,telephone,password_has))
+            return True
+        except Exception:
+            return False
+    
+    def login(self,Telephone,motdepasse):
+
+        password_has = sha256(motdepasse.encode()).hexdigest()
+        Jury = self.db.fetchone("SELECT id FROM jurys WHERE telephone=? AND motdepasse=?",(Telephone,password_has))
+
+        return Jury[0] if Jury else None
+
+    def getAll(self):
+        return self.db.fetchall("SELECT * FROM jurys ")
+
+    def  delete_jury(self,jury_id):
+        self.db.execute("DELETE FROM jurys WHERE id=?",(jury_id,))
+    
+    
+
+

@@ -76,7 +76,7 @@ Fonctionnalités à rendre:
     - Il faut entrer les notes pour chaque matière et calculer les résultats.
     - Calcule des résultats et attribution des statuts (admis, repêchage, recalé).
 
-- Gestion des repêchages
+- Ge stion des repêchages 
   - prerequis : Livret scolaire et note du candidat
   - description : Détermine les candidats pouvant bénéficier d’un repêchage en fonction de leurs notes et de leurs résultats scolaires.
 
@@ -102,4 +102,4 @@ Fonctionnalités à rendre:
 - Intégrez les donnees sur le prototype pour faire les tests
   - Vérification du bon fonctionnement du système avec des données de test
 
-- Interface Desktop : kivy (Ibrahima)=> une prototype
+- Interface Desktop : kivy (Ibrahima) => une prototype

@@ -119,7 +119,7 @@ Taches :
         - Gestion des reperage : Bamba
         - impression en pdf des candidats , anonymat , resultat, deliberation : Ibrahima
         - generateur de releve de notes pour la premiere et second session : Elhadji
-- Interface Desktop : kivy (Ibrahima)=> une prototype
+- Interface Desktop : kivy (Ibrahima)=> une prototype (lien figma : https://www.figma.com/design/0UiojxTt9S12NEHwI27hO0/Untitled?node-id=0-1&m=dev&t=3bJHB702itJ5Oemq-1)
       - Connection d'un jury => Ibrahima
       - Crud d'un jury => Bamba
       - Crud d'un candidat => Elhadji

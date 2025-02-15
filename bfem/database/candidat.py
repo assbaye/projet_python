@@ -1,4 +1,4 @@
-from database.bdd import bdd
+from bdd import bdd
 
 #  - Numero de table : Entier
 #     - Prenom_s : Chaine de caractères

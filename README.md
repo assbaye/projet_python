@@ -76,7 +76,7 @@ Fonctionnalités à rendre:
     - Il faut entrer les notes pour chaque matière et calculer les résultats.
     - Calcule des résultats et attribution des statuts (admis, repêchage, recalé).
 
-- Ge stion des repêchages 
+- Gestion des repêchages
   - prerequis : Livret scolaire et note du candidat
   - description : Détermine les candidats pouvant bénéficier d’un repêchage en fonction de leurs notes et de leurs résultats scolaires.
 
@@ -102,4 +102,33 @@ Fonctionnalités à rendre:
 - Intégrez les donnees sur le prototype pour faire les tests
   - Vérification du bon fonctionnement du système avec des données de test
 
-- Interface Desktop : kivy (Ibrahima)=> une prototype
+
+Taches :
+- Creation du base de donnes
+      - jurys () => Bamba
+      - candidats () => Bamba
+      - matieres () => Ibrahima 
+      - Anonymous () => El hadji
+      - examen () => Ibrahima
+  - fonctionnalite
+        - Parametrage du jury (crud) : inscription et login  => Bamba
+        - Crud candidats => Bamba
+        - Crud matieres => Ibrahima 
+        - generateur d'anonymat pour chaque matiere pour la session 1 et 2 : elhadji
+        - La deliberation du session 1 et 2 : Bamba
+        - Gestion des reperage : Bamba
+        - impression en pdf des candidats , anonymat , resultat, deliberation : Ibrahima
+        - generateur de releve de notes pour la premiere et second session : Elhadji
+- Interface Desktop : kivy (Ibrahima)=> une prototype (lien figma : https://www.figma.com/design/0UiojxTt9S12NEHwI27hO0/Untitled?node-id=0-1&m=dev&t=3bJHB702itJ5Oemq-1)
+      - Connection d'un jury => Ibrahima
+      - Crud d'un jury => Bamba
+      - Crud d'un candidat => Elhadji
+      - Crud des Matiere => Ibrahima
+      - crud des evaluation => Bamba
+      - liste des anonymat en vue  pour chaque matiere => Elhadji
+      - liste des resultat par ordre de merite (deliveration) => Ibrahima
+      - liste des candidats => Bamba
+      - liste des matiere => Elhadji
+      - Liste des releves de notes => Ibrahima
+      - option d'impression => Ibrahima
+      

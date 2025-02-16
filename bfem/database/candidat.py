@@ -22,10 +22,10 @@ Candidat
     => update(candidate_id, params)
 """
 
-
+""" Gestion des candidats """
 class Candidat:
 
-    """ Gestion des candidats """
+    
     def __init__(self):
         self.db = bdd()
         self.create_table()
@@ -34,6 +34,7 @@ class Candidat:
     # Creation de la base de donnees des candidats si tel n'est pas le cas
     
     def create_table(self):
+        
         self.db.execute(""" CREATE TABLE IF NOT EXISTS candidats (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         prenom VARCHAR(125) NOT NULL,
@@ -58,7 +59,6 @@ class Candidat:
     def get_candidate(self,candidate_id):
 
         try :
-
             return self.db.fetchone("SELECT * FROM candidats WHERE id=?",(candidate_id,))
         except Exception:
             return False
@@ -79,7 +79,7 @@ class Candidat:
     
 
     def update_candidate(self,candidate_id,prenom = None,nom= None,date_naissance= None,lieu_naissance= None,sexe= None,nationalite= None,choix_epr_facultative= None,epr_facultative= None,etablissement= None,aptitude_sportive= None):
-       print("Bonjour")
+       
        query = "UPDATE candidats SET "
        values = []
        
@@ -130,7 +130,7 @@ class Candidat:
         
        self.db.execute(query,(values))
 
-       print(query," ", values)
+      
           
 
 

@@ -1,0 +1,64 @@
+BoxLayout:
+    orientation: "horizontal"
+
+    MDNavigationLayout:
+
+        ScreenManager:
+            id: screen_manager
+
+            MDScreen:
+                name: "home"
+                MDLabel:
+                    text: "Bienvenue à l'accueil"
+                    halign: "center"
+                    theme_text_color: "Primary"
+                    font_style: "H4"
+
+            MDScreen:
+                name: "profile"
+                MDLabel:
+                    text: "Page de Profil"
+                    halign: "center"
+                    theme_text_color: "Secondary"
+                    font_style: "H5"
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            ContentNavigationDrawer:
+                orientation: "vertical"
+                padding: "8dp"
+                spacing: "8dp"
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    adaptive_height: True
+                    padding: "10dp"
+                    spacing: "10dp"
+
+                    MDLabel:
+                        text: "Menu Principal"
+                        theme_text_color: "Primary"
+                        font_style: "H6"
+                        halign: "center"
+
+                    MDSeparator:
+                        height: "1dp"
+
+                    MDRaisedButton:
+                        text: "Accueil"
+                        icon: "home"
+                        on_release:
+                            app.root.ids.nav_drawer.set_state("close")
+                            app.root.ids.screen_manager.current = "home"
+                        md_bg_color: app.theme_cls.primary_color  # Couleur principale
+                        size_hint_x: 0.9
+                        pos_hint: {"center_x": 0.5}
+
+                    MDRaisedButton:
+                        text: "Profil"
+                        icon: "account"
+                        on_release:
+                            app.root.ids.nav_drawer.set_state("close")
+                            app.root.ids.screen_manager.current = "profile"
+                        size_hint_x: 0.9
+                        pos_hint: {"center_x": 0.5}

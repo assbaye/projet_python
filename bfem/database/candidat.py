@@ -1,4 +1,4 @@
-from bdd import bdd
+from bfem.database.bdd import bdd
 
 #  - Numero de table : Entier
 #     - Prenom_s : Chaine de caractères
@@ -25,7 +25,7 @@ class Candidat:
     
     def create_table(self):
         self.db.execute(""" CREATE TABLE IF NOT EXISTS candidats (
-                        id INTERGER PRIMARY KEY AUTOINCREMENT,
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
                         prenom VARCHAR(125) NOT NULL,
                         nom VARCHAR(125) NOT NULL,
                         date_naissance DATE NOT NULL,
@@ -39,12 +39,16 @@ class Candidat:
                         )"""
                         )
         
-    def add_candidate(self,prenom,nom,date_naissance,lieu_naissance,sexe,nationalite,choix_epr_facultative,epr_facultative,etablissement,aptitude_sportive):
-        try:
-            self.db.execute("INSER INTO candidats (prenom,nom,date_naissance,lieu_naissance,sexe,nationalite,choix_epr_facultaive,epr_facultative,etablissement,aptitude_sportive) VALUES (?,?)",(prenom,nom,date_naissance,lieu_naissance,sexe,nationalite,choix_epr_facultative,epr_facultative,etablissement,aptitude_sportive))
-            return True
-        except Exception:
-            return False
+    def add_candidate(self, prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive):
+            try:
+                self.db.execute("INSERT INTO candidats (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                    (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive))
+                self.db.commit()  
+                return True
+            except Exception as e:
+                print(f"Erreur lors de l'ajout du candidat : {str(e)}")  # Affichage de l'erreur
+                return False
+        
     
     def get_candidate(self,candidate_id):
 
@@ -60,6 +64,9 @@ class Candidat:
          return True
         except Exception :
             return False
+        
+    def getAll(self):
+        return self.db.fetchall("SELECT * FROM candidats")
 
 
 

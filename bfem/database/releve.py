@@ -75,7 +75,6 @@ class ReleveNotes:
         statut = self.determine_statut(moyenne)
 
         dossier = "assets/releves"
-        print(f"Chemin du dossier : {os.path.abspath(dossier)}")
         os.makedirs(dossier, exist_ok=True)
         filename = f"{dossier}/Releve_{candidat_id}.pdf"
 
@@ -124,3 +123,4 @@ if __name__ == "__main__":
     releve = ReleveNotes()
     candidat_id = 1  # ID du candidat à tester
     releve.generer_releve(candidat_id)
+

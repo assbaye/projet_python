@@ -20,7 +20,7 @@ class MatiereScreen(Screen):
 class MainApp(App):
     def build(self):
         sm = ScreenManager()
-        #sm.add_widget(LoginScreen(name='login'))
+        sm.add_widget(LoginScreen(name='login'))
         sm.add_widget(MatiereScreen(name='matiere'))
         return sm
     

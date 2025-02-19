@@ -24,7 +24,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from components.candidats import Candidat
 from components.matiere import Matiere
 
-
+from components.login import LoginScreen 
 # color:
 # bleu clair =>CCEEFF
 # grid1 =>D9D9D9
@@ -77,26 +77,12 @@ class MyApp(MDApp):
         # self.theme_cls.theme_style = "Light"
         
         # self.theme_cls.primary_palette = "Blue" 
-
+    
         
          
         return MDScreenManager(
-
-                MDScreen(
-                    MDLabel(
-                        text="Bonjour",
-                        pos_hint= {'center_x': 0.5,'center_y': 0.5},
-                    ),
-                    MDRaisedButton(
-                        text="Connect",
-                        on_press=lambda instance: self.connect("baseapp")
-                    ),
-                    
-
-                    id="login",
-                    name="login",
-                    ),
-             MDScreen(
+            LoginScreen(name="login"),
+            MDScreen(
                  MDNavigationLayout(
                     MDScreenManager(
                     

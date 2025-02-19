@@ -21,10 +21,10 @@ from kivymd.app import MDApp
 from kivymd.uix.behaviors import CommonElevationBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 
-from components.candidats import Candidat
-from components.matiere import Matiere
+from .components.candidats import Candidat
+from .components.matiere import Matiere
 
-from components.login import LoginScreen 
+from .components.login import LoginScreen 
 # color:
 # bleu clair =>CCEEFF
 # grid1 =>D9D9D9

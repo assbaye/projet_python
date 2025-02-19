@@ -1,5 +1,10 @@
 from bfem.database.bdd import bdd
-
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib import colors
+from reportlab.lib.units import inch
+import os
 #  - Numero de table : Entier
 #     - Prenom_s : Chaine de caractères
 #     - Nom : Chaine de caractères
@@ -67,6 +72,5 @@ class Candidat:
         
     def getAll(self):
         return self.db.fetchall("SELECT * FROM candidats")
-
 
 

@@ -26,6 +26,7 @@ class StudentList(RecycleView):
                 "etablissement": candidat[9],
                 # "moyenne": str(candidat[10])
             })
+        self.candidat.print_to_pdf()
         
 
 class StudentItem(BoxLayout):

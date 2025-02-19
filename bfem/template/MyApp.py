@@ -1,3 +1,4 @@
+from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.navigationdrawer import MDNavigationDrawerHeader
 from kivymd.uix.banner.banner import MDFlatButton
 from kivymd.uix.bottomsheet.bottomsheet import MDLabel
@@ -77,11 +78,28 @@ class MyApp(MDApp):
         
         # self.theme_cls.primary_palette = "Blue" 
 
-
+        
          
-        return MDScreen(
-            MDNavigationLayout(
-                MDScreenManager(
+        return MDScreenManager(
+
+                MDScreen(
+                    MDLabel(
+                        text="Bonjour",
+                        pos_hint= {'center_x': 0.5,'center_y': 0.5},
+                    ),
+                    MDRaisedButton(
+                        text="Connect",
+                        on_press=lambda instance: self.connect("baseapp")
+                    ),
+                    
+
+                    id="login",
+                    name="login",
+                    ),
+             MDScreen(
+                 MDNavigationLayout(
+                    MDScreenManager(
+                    
                     MDScreen(
                         MDBoxLayout(
                             MDBoxLayout(
@@ -104,7 +122,8 @@ class MyApp(MDApp):
                                 MDNavigationRailMenuButton(
                                     on_release =self.open_nav_drawer,
                                 ),
-                                
+
+                               
                                 id="navigation_rail",
                                 md_bg_color="#cceeff",
                                 selected_color_background="#256D94",
@@ -130,9 +149,9 @@ class MyApp(MDApp):
                 ),
                 id="screen_manager",
             ),
-            MDNavigationDrawer(
+                MDNavigationDrawer(
 
-                MDNavigationDrawerMenu(
+                    MDNavigationDrawerMenu(
                     #  MDNavigationDrawerHeader(
                     #      title="Examen BFEM",
                     #      text="Gestion des examen",
@@ -177,8 +196,13 @@ class MyApp(MDApp):
                
 
             ),
+                
+                id="base",
+                name="baseapp"
+            ),
+            id="systeme_root_manager"
 
-            )
+        )
     
     def switch_screen(self,*args,screen_manager_content=None):
         """
@@ -191,28 +215,25 @@ class MyApp(MDApp):
                 screen_manager_content.current = route["screen"].name
                 return
       
-    def switch_screen_drawer(self,*args,screen_manager_content=None):
-
-        instance_navigation_rail, instance_navigation_drawer_item = args
-
-        for route in self.routers:
-            if route["icon"] == instance_navigation_drawer_item.icon:
-                screen_manager_content.current = route["screen"].name
-                self.root.ids.nav_drawer.set_state("close")
-                return
-    
+  
     def switch_screen_drawer(self, instance_navigation_drawer_item, screen_manager_content):
    
     # Chercher la route correspondante en comparant les icônes
         for route in self.routers:
             if route["icon"] == instance_navigation_drawer_item.icon:  # Vérifie l'icône
                 screen_manager_content.current = route["screen"].name
-                self.root.ids.nav_drawer.set_state("close")
+                self.root.ids.base.ids.nav_drawer.set_state("close")
                 return
 
     def open_nav_drawer(self,*args):
-        self.root.ids.nav_drawer.set_state("open")
+        self.root.ids.base.ids.nav_drawer.set_state("open")
     
+    def connect(self,screen):
+     
+        screen_manager = self.root
+        if screen_manager:
+            screen_manager.current = screen
+        
     def on_start(self):
         
         
@@ -239,13 +260,13 @@ class MyApp(MDApp):
             }
         ]
 
-        screen_manager = self.root.ids.screen_manager
+        screen_manager = self.root.ids.base.ids.screen_manager
 
         root_box = screen_manager.ids.screen.ids.box.ids.box_rail.ids.root_box
         
         navigation_rail =root_box.ids.navigation_rail
 
-        navigation_dramer = self.root.ids.nav_drawer.ids.navigation
+        navigation_dramer = self.root.ids.base.ids.nav_drawer.ids.navigation
 
         
         for route in self.routers:
@@ -259,6 +280,13 @@ class MyApp(MDApp):
             navigation_rail.add_widget(item_rail)
             item_drawer.bind(on_release=lambda instance: self.switch_screen_drawer(instance, screen_manager_content))
             navigation_dramer.add_widget(item_drawer)
+        disconnect =  DramerClickableItem(
+                                    text="Alioune Ndiaye",
+                                    icon="logout"
+                                )
+        disconnect.bind(on_release=lambda instance: self.connect("login"))
+
+        navigation_dramer.add_widget(disconnect)    
         
         
         screen_manager_content = root_box.ids.screen_manager_content

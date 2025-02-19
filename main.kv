@@ -11,6 +11,31 @@ ScreenManager:
 
 
 
+<MatiereScreen>: # Ecran d'inscription pour les administrateurs
+    BoxLayout: 
+        canvas.before:  
+            Color:
+                rgba: hex("#CCEEFF")
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        orientation: 'horizontal'
+        padding:6,0
+        spacing: 10
+
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 0
+            spacing: 10
+            size_hint: 0.3, 1
+            canvas.before:  
+                Color:
+                    rgba: 250, 250, 250, 0.6
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+
 
 
 

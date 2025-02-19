@@ -1,4 +1,4 @@
-from bdd import bdd
+from bfem.database.bdd import bdd
 
 
 class Matiere:
@@ -40,6 +40,16 @@ class Matiere:
 
     def getAll(self):
         return self.db.fetchall("SELECT * FROM matieres ")
-
+    
+    def getIds(self):
+        return self.db.fetchall("SELECT id FROM matieres ")
+        
     def delete_matiere(self, matiere_id):
         self.db.execute("DELETE FROM matieres WHERE id=?", (matiere_id,))
+        
+    def update_matiere(self, matiere_id, nouveau_nom, nouveau_coefficient):
+        query = "UPDATE matieres SET nom_matiere = ?, coefficient = ? WHERE id = ?"
+        self.db.execute(query, (nouveau_nom, nouveau_coefficient, matiere_id))
+
+    
+        

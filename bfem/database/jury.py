@@ -1,4 +1,4 @@
-from bdd import bdd
+from bfem.database.bdd import bdd
 from hashlib import sha256
 
 
@@ -50,12 +50,14 @@ class Jury :
         except Exception:
             return False
     
-    def login(self,Telephone,motdepasse):
+    def login(self, Telephone, motdepasse):
+    # Hachage du mot de passe
+        password_hash = sha256(motdepasse.encode()).hexdigest()
+        Jury = self.db.fetchone("SELECT id FROM jurys WHERE telephone=? AND motdepasse=?", (Telephone, password_hash))
 
-        password_has = sha256(motdepasse.encode()).hexdigest()
-        Jury = self.db.fetchone("SELECT id FROM jurys WHERE telephone=? AND motdepasse=?",(Telephone,password_has))
-
-        return Jury[0] if Jury else None
+        return Jury[0] if Jury is not None else None
+    def get_jury(self,jury_id):
+        return self.db.fetchone("SELECT * FROM jurys WHERE id=?", (jury_id,))
 
     def getAll(self):
         return self.db.fetchall("SELECT * FROM jurys ")

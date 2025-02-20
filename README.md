@@ -43,8 +43,7 @@ Livret scolaire:
 
 Evaluation:  
     - note
-    - Matiere_id
-    - candidat_id
+    - anonymous_id
 Matiere:
     - nom
     - Coeff
@@ -105,17 +104,19 @@ Fonctionnalités à rendre:
 
 Taches :
 - Creation du base de donnes
-      - jurys () => Bamba
-      - candidats () => Bamba
+      - jurys () => Bamba (terminer)
+      - candidats () => Bamba (terminer)
+        - livretscolaire () => Bamba
       - matieres () => Ibrahima 
       - Anonymous () => El hadji
       - examen () => Ibrahima
   - fonctionnalite
-        - Parametrage du jury (crud) : inscription et login  => Bamba
-        - Crud candidats => Bamba
+        - Parametrage du jury (crud) : inscription et login  => Bamba => terminer
+        - Crud candidats & livret scolaire => Bamba => terminer
         - Crud matieres => Ibrahima 
         - generateur d'anonymat pour chaque matiere pour la session 1 et 2 : elhadji
         - La deliberation du session 1 et 2 : Bamba
+            - Crud Examen
         - Gestion des reperage : Bamba
         - impression en pdf des candidats , anonymat , resultat, deliberation : Ibrahima
         - generateur de releve de notes pour la premiere et second session : Elhadji

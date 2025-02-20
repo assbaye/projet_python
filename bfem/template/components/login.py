@@ -1,9 +1,14 @@
-#:kivy 1.0.9
-<MatiereScreen>:
+from kivymd.uix.button import MDFillRoundFlatButton
+from kivymd.uix.backdrop.backdrop import MDFloatLayout
+from kivy.uix.accordion import FloatLayout
+from kivymd.uix.pickers.datepicker.datepicker import MDTextField
+from kivymd.uix.bottomsheet.bottomsheet import MDLabel
+from kivymd.uix.backdrop.backdrop import MDBoxLayout
+from kivymd.uix.screen import MDScreen
+from kivymd.app import MDApp
 
-
-<LoginScreen>: # Ecran de connexion pour les administrateurs
-    BoxLayout:
+Kv = """
+BoxLayout:
         canvas.before:  
             Color:
                 rgba: hex("#CCEEFF")
@@ -117,64 +122,81 @@
                     pos_hint: {'center_x': 0.5}
 
 
+"""
 
-<MatiereScreen>: # Ecran d'inscription pour les administrateurs
-    BoxLayout: 
-        canvas.before:  
-            Color:
-                rgba: hex("#CCEEFF")
-            Rectangle:
-                size: self.size
-                pos: self.pos
-        orientation: 'horizontal'
-        padding:6,0
-        spacing: 10
+class LoginScreen(MDScreen):
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
-        BoxLayout:
-            orientation: 'vertical'
-            padding: 0
-            spacing: 10
-            size_hint: 0.3, 1
-            canvas.before:  
-                Color:
-                    rgba: 250, 250, 250, 0.6
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
-
-
-            Label:
-                text: 'Examen BFEM'
-                color: hex("#000000")
-                font_size: 24
-                bold: True
-                size_hint: 0.8, 0.1
-            
-            BoxLayout:
-                orientation: 'vertical'
-                canvas.before:  
-                    Color:
-                        rgba: hex("#FFFFFF")
-                    Rectangle:
-                        size: self.size
-                        pos: self.pos
+        self.add_widget(
+            MDFloatLayout(
+                MDBoxLayout(
+                    MDBoxLayout(
+                        MDLabel(
+                            text="Connection ",
+                           
+                            bold=True,
+                            halign="center"
+                        ),
+                        MDLabel(
+                            text="Gestion des evaluation",
+                            # font_size=10,
+                            color="#d9d9d9",
+                            halign="center"
+                        ),
+                      
+                        id="header_form",
+                        orientation="vertical",
+                        spacing=2
+                    ),
+                    MDBoxLayout(
+                        MDTextField(
+                            id="telephone",
+                            hint_text="Telephone"
                         
-               
+                        ),
+                         MDTextField(
+                             id="motdepasse",
+                            hint_text="Mot de passe "
+                        ),
+                        MDFillRoundFlatButton(
+                            text="Connecter",
+                            md_bg_color="#ff7300",
+                            on_release= lambda instance: self.login(instance) 
+                        ),
+                        orientation="vertical",
+                        spacing=5,
 
-            
-
-
-        FloatLayout:
-            orientation: 'vertical'
-            padding: 40
-            spacing: 10
-            size_hint: 0.7, 0.9
-            canvas.before:  
-                Color:
-                    rgba: hex("#FFFFFF")
+                    ),
                     
-                RoundedRectangle:
-                    size: self.size
-                    pos: self.pos
-                    radius: [20, 20, 20, 20]
-            
+                    id="main_form",
+                    pos_hint= {'center_x': 0.5,'center_y': .5},
+                    md_bg_color="#ffffff",
+                    size_hint= [None, None],
+                    size=[600,400],
+                    orientation="vertical",
+                    radius=18,
+                    padding=20,
+                    spacing=10
+                ),
+                
+                # size=self.size,
+                # pos=self.pos,
+                # orientation= 'vertical',
+                md_bg_color="#CCEEFF",
+                # padding=40,
+                # spacing=10,
+            )
+        )
+
+    def login(self,instance=None):
+        app = MDApp.get_running_app()  # Récupère l'instance de l'application
+        app.connect("baseapp")  # Change d'écran
+
+
+
+    
+
+
+

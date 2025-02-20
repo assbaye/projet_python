@@ -41,6 +41,7 @@ class Matiere(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.padding = 20
+        self.radius = 20
     
     def on_kv_post(self, base_widget):
         self.addnavigation()

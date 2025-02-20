@@ -1,17 +1,21 @@
+from kivymd.uix.bottomnavigation.bottomnavigation import MDScreen
+from kivymd.uix.backdrop.backdrop import MDBoxLayout
 from kivy.uix.screenmanager import Screen
-from screens.login_screen import LoginScreen
+# from screens.login_screen import LoginScreen
 from bfem.database.jury import Jury
 from bfem.database.matiere import Matiere
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
+from kivy.lang import Builder
 
 
-
-
+# Builder.load_file("bfem/template/components/component_matiere/ajout_matiere.kv")
 
 #Ecran d'ajout de matiere
 
-class AddMatiereScreen(Screen):
+class AddMatiereScreen(MDScreen):
+
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.jury = Jury()

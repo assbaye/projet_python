@@ -125,11 +125,18 @@ Taches :
       - Crud d'un jury => Bamba
       - Crud d'un candidat => Elhadji
       - Crud des Matiere => Ibrahima✅
-      - crud des evaluation => Bamba
-      - liste des anonymat en vue  pour chaque matiere => Elhadji
-      - liste des resultat par ordre de merite (deliveration) => Ibrahima
-      - liste des candidats => Bamba
-      - liste des matiere => Elhadji
-      - Liste des releves de notes => Ibrahima
-      - option d'impression => Ibrahima
+      - crud des evaluation 
+        - anonymat => elhadji 
+          - liste des anonymat par matiere et par candidats avec option d'impression 
+          - generateur d'anonymat 
+        - note Bamba
+          - ajouter un note(anonymat et note)
+          - modifier une note
+          - afficher tous les notes d'un candidats 
+          - liste des notes par matiere
+        - deliberation => Ibrahima 
+          - la liste des candidats avec l'ordre de merite si tous les matieres ont des notes 
+        - releves de notes => Ibrahima 
+          - afficher la liste des candidats avec leurs releves de notes avec l'option d'impression 
+          
       

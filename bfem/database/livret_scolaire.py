@@ -1,5 +1,5 @@
 
-from bdd import bdd 
+from .bdd import bdd 
 
 
 

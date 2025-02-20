@@ -121,15 +121,22 @@ Taches :
         - impression en pdf des candidats , anonymat , resultat, deliberation : Ibrahima
         - generateur de releve de notes pour la premiere et second session : Elhadji
 - Interface Desktop : kivy (Ibrahima)=> une prototype (lien figma : https://www.figma.com/design/0UiojxTt9S12NEHwI27hO0/Untitled?node-id=0-1&m=dev&t=3bJHB702itJ5Oemq-1)
-      - Connection d'un jury => Ibrahima
+      - Connection d'un jury => Ibrahima✅
       - Crud d'un jury => Bamba
       - Crud d'un candidat => Elhadji
-      - Crud des Matiere => Ibrahima
-      - crud des evaluation => Bamba
-      - liste des anonymat en vue  pour chaque matiere => Elhadji
-      - liste des resultat par ordre de merite (deliveration) => Ibrahima
-      - liste des candidats => Bamba
-      - liste des matiere => Elhadji
-      - Liste des releves de notes => Ibrahima
-      - option d'impression => Ibrahima
+      - Crud des Matiere => Ibrahima✅
+      - crud des evaluation 
+        - anonymat => elhadji 
+          - liste des anonymat par matiere et par candidats avec option d'impression 
+          - generateur d'anonymat 
+        - note Bamba
+          - ajouter un note(anonymat et note)
+          - modifier une note
+          - afficher tous les notes d'un candidats 
+          - liste des notes par matiere
+        - deliberation => Ibrahima 
+          - la liste des candidats avec l'ordre de merite si tous les matieres ont des notes 
+        - releves de notes => Ibrahima 
+          - afficher la liste des candidats avec leurs releves de notes avec l'option d'impression 
+          
       

@@ -1,5 +1,10 @@
-from bdd import bdd
-
+from bfem.database.bdd import bdd
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib import colors
+from reportlab.lib.units import inch
+import os
 #  - Numero de table : Entier
 #     - Prenom_s : Chaine de caractères
 #     - Nom : Chaine de caractères
@@ -50,11 +55,18 @@ class Candidat:
                         )"""
                         )
         
-    def add_candidate(self,prenom,nom,date_naissance,lieu_naissance,sexe,nationalite,choix_epr_facultative,epr_facultative,etablissement,aptitude_sportive):
+
+    def add_candidate(self, prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive):
+            try:
+                self.db.execute("INSERT INTO candidats (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                    (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive))
+                self.db.commit()  
+                return True
+            except Exception as e:
+                print(f"Erreur lors de l'ajout du candidat : {str(e)}")  # Affichage de l'erreur
+                return False
         
-            self.db.execute("INSERT INTO candidats (prenom,nom,date_naissance,lieu_naissance,sexe,nationalite,choix_epr_facultative,epr_facultative,etablissement,aptitude_sportive) VALUES (?,?,?,?,?,?,?,?,?,?)",(prenom,nom,date_naissance,lieu_naissance,sexe,nationalite,choix_epr_facultative,epr_facultative,etablissement,aptitude_sportive))
-            
-       
+
     
     def get_candidate(self,candidate_id):
 

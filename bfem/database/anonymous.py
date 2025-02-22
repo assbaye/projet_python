@@ -1,5 +1,6 @@
 from bdd import bdd  
 
+
 class AnonymatDatabase:
     def __init__(self):
         """
@@ -27,7 +28,7 @@ class AnonymatDatabase:
             """
         )
 
-    def generer_anonymat(self, candidat_id, matiere_id, session, examen):
+    def generer_anonymat(self, candidat_id, matiere_id, examen):
         """
         Génère et insère un anonymat pour un candidat et une matière donnée, en tenant compte de la session.
 

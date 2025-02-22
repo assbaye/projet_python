@@ -4,6 +4,9 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
 from .component_evaluation.Anonymat import Anonymat
+from .component_evaluation.Note import Note
+
+from kivymd.app import MDApp
 
 KV = """
 <Evaluation> :
@@ -21,7 +24,7 @@ KV = """
                         orientation:"horizontal"
                         # adaptive_width:True
                         size_hint: None, None
-                        pos_hint: {'center_x': 0.1,'center_y':0.5}
+                        pos_hint: {'top': 1,}
                         # md_bg_color:"#ffffff"
                         spacing: '10dp'
                         padding: ('10dp', '10dp', '10dp', '10dp')
@@ -66,6 +69,11 @@ class Evaluation(MDScreen):
                 "icon": "book-plus",
                 "screen": Anonymat(name="Ananymous")
             },
+             {
+                "text": "Note",
+                "icon": "book-plus",
+                "screen": Note(name="Note")
+            },
            
         
            
@@ -85,3 +93,10 @@ class Evaluation(MDScreen):
             )
             box_layout.add_widget(bouton_navigation)
 
+
+# class Example(MDApp):
+
+#     def build(self):
+#         return Evaluation()
+
+# Example().run()

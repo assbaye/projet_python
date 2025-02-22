@@ -3,7 +3,10 @@ import sqlite3
 class bdd:
 
     _instance = None
-
+    @staticmethod
+    def connect():
+        return sqlite3.connect("examen_bfem")
+    
     def __new__(cls,db_name="examen_bfem"):
 
         if cls._instance is None:
@@ -16,6 +19,8 @@ class bdd:
     """
      #   Execute une requete Sql
     """
+    def commit(self):
+        self.conn.commit()
     def execute(self,query,params=()):
         self.cursor.execute(query,params)
         self.conn.commit()

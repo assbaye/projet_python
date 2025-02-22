@@ -54,12 +54,26 @@ class Candidat:
                         aptitude_sportive BOOL default(1)
                         )"""
                         )
+        # Ajouter les nouvelles colonnes si elles n'existent pas déjà
+        existing_columns = [col[1] for col in self.db.fetchall("PRAGMA table_info(candidats)")]
+        new_columns = {
+           "moyenne_6e": "FLOAT",
+           "moyenne_5e": "FLOAT",
+           "moyenne_4e": "FLOAT",
+           "moyenne_3e": "FLOAT",
+           "lv2": "VARCHAR(125)",
+           "type_candidat": "VARCHAR(125)",
+           "nombre_fois": "INTEGER"
+       }
+
+        for col, col_type in new_columns.items():
+            if col not in existing_columns:
+                self.db.execute(f"ALTER TABLE candidats ADD COLUMN {col} {col_type}")
         
 
-    def add_candidate(self, prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive):
+    def add_candidate(self, prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive,moyenne_6e,moyenne_5e,moyenne_4e,moyenne_3e,lv2,type_candidat,nombre_fois):
             try:
-                self.db.execute("INSERT INTO candidats (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive) VALUES (?,?,?,?,?,?,?,?,?,?)",
-                    (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive))
+                self.db.execute("INSERT INTO candidats (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive,moyenne_6e,moyenne_5e,moyenne_4e,moyenne_3e,lv2,type_candidat,nombre_fois) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive,moyenne_6e,moyenne_5e,moyenne_4e,moyenne_3e,lv2,type_candidat,nombre_fois))
                 self.db.commit()  
                 return True
             except Exception as e:
@@ -90,7 +104,7 @@ class Candidat:
             return False
     
 
-    def update_candidate(self,candidate_id,prenom = None,nom= None,date_naissance= None,lieu_naissance= None,sexe= None,nationalite= None,choix_epr_facultative= None,epr_facultative= None,etablissement= None,aptitude_sportive= None):
+    def update_candidate(self,candidate_id,prenom = None,nom= None,date_naissance= None,lieu_naissance= None,sexe= None,nationalite= None,choix_epr_facultative= None,epr_facultative= None,etablissement= None,aptitude_sportive= None,moyenne_6e= None,moyenne_5e= None,moyenne_4e= None,moyenne_3e= None,lv2= None,type_candidat= None,nombre_fois= None):
        
        query = "UPDATE candidats SET "
        values = []
@@ -134,7 +148,28 @@ class Candidat:
        if aptitude_sportive:
             query += "aptitude_sportive= ?, "
             values.append(aptitude_sportive)
-
+       if moyenne_6e:
+            query += "moyenne_6e= ?, "
+            values.append(moyenne_6e)
+       if moyenne_5e:
+            query += "moyenne_5e= ?, "
+            values.append(moyenne_5e)
+       if moyenne_4e:
+            query += "moyenne_4e= ?, "
+            values.append(moyenne_4e) 
+       if moyenne_3e:
+            query += "moyenne_3e= ?, "
+            values.append(moyenne_3e)
+       if lv2:
+            query += "lv2= ?, "
+            values.append(lv2)   
+       if type_candidat:
+            query += "type_candidat= ?, "
+            values.append(type_candidat) 
+       if nombre_fois:
+            query += "nombre_fois= ?, "
+            values.append(nombre_fois)
+             
        query = query.rstrip(", ")
        query += " WHERE id= ?"
        values.append(candidate_id)

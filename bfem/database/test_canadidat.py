@@ -1,4 +1,8 @@
-from candidat import Candidat
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from bfem.database.candidat import Candidat
 
 
 
@@ -10,9 +14,9 @@ Interface_candidat =  Candidat()
 
 # on ajoute un candidat 
 
-print(Interface_candidat.add_candidate("Modou","Ndiaye","21/12/2001","Dakar","H","Senegalais","0","Neutre","Gainde fatma","False"))
+print(Interface_candidat.add_candidate("ABLAYE","Ndiaye","21/12/2003","louga","M","Senegalaise","0","Neutre","CEM dielerlou","False","12","13","14","15","PC","officiel","0"))
 
-print(Interface_candidat.add_candidate("Modou","Gaye","21/12/2001","Dakar","H","Senegalais","0","Neutre","Gainde fatma","False"))
+print(Interface_candidat.add_candidate("FATOU","Gaye","21/12/2002","Dakar","F","Senegalaise","0","Neutre","CEM Commune","False","11","10","12","14","LV2","libre","2"))
 
 
 # on recupre les candidat 
@@ -26,4 +30,4 @@ print(Interface_candidat.get_candidate(1))
 # Interface_candidat.update_candidate(1,prenom="cana")
 
 
-# print(Interface_candidat.get_candidate(2))
+print(Interface_candidat.get_candidate(2))

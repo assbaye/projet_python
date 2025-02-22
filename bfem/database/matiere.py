@@ -1,4 +1,4 @@
-from .bdd import bdd
+from bfem.database.bdd import bdd
 
 
 class Matiere:

@@ -1,4 +1,4 @@
-from bdd import bdd  
+from .bdd import bdd  
 
 
 class AnonymatDatabase:
@@ -26,6 +26,12 @@ class AnonymatDatabase:
             )
             """
         )
+
+    def get_anomonymat_by_matiere(self,matiere_id):
+        return self.db.fetchall("SELECT * FROM anonymats WHERE matiere_id=?",(matiere_id, ))
+
+    def getAll(self):
+        return self.db.fetchall("SELECT * FROM anonymats ")
 
     def generer_anonymat(self, candidat_id, matiere_id, examen):
         """

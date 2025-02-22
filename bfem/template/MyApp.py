@@ -129,7 +129,7 @@ class MyApp(MDApp):
                             id="root_box",
                             ),
                             id="box_rail",
-                         orientation= 'vertical',
+                            orientation= 'vertical',
                         ),
                       id="box",  
                     ),

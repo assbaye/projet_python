@@ -7,7 +7,7 @@ from kivy.lang import Builder
 # from .component_matiere.add_matiere_screen import AddMatiereScreen
 from .component_matiere.AddMatiere import AddMatiere
 from .component_matiere.UpdateMatiere import UpdateMatiere
-from .component_matiere.ListMatiere import ListMatiere
+from .component_matiere.ListeMatiere import ListeMatiere
 
 KV = """
 <Matiere> :
@@ -76,7 +76,7 @@ class Matiere(MDScreen):
             {
                 "text": "Liste des matières",
                 "icon": "book-account",
-                "screen": ListMatiere(name="Liste_matiere")
+                "screen": ListeMatiere(name="Liste_matiere")
             }
            
            

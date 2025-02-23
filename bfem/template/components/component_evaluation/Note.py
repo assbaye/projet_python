@@ -1,3 +1,4 @@
+from kivy.uix.effectwidget import Rectangle
 from kivy.uix.accordion import StringProperty
 from kivymd.uix.banner.banner import OneLineListItem
 from kivymd.uix.datatables.datatables import MDDropdownMenu
@@ -18,7 +19,7 @@ from kivy.lang import Builder
 from .AddNote import AddNote
 from kivymd.app import MDApp
 from bfem.database.matiere import Matiere
-from .ListeNote import listNote
+from .ListeNote import ListNote
 
 
 
@@ -69,8 +70,7 @@ KV = """
                                 height: "40dp"
                                 readonly: True
                                 width:200
-                              
-
+                               
                                 on_focus:if self.focus: root.show_dropdown(self)
                                 pos_hint:{"bottom": 1}
             
@@ -78,6 +78,12 @@ KV = """
                        
                     ScreenManager:
                         id:screen_manager_current
+                        AddNote:
+                            name: "ajouter_des_notes"
+                            id:addnote
+                        ListNote:
+                            name: "liste_des_notes"
+                            id: listenote
                 
 """
 
@@ -106,15 +112,9 @@ class Note(MDScreen):
              {
                 "text": "Liste des notes",
                 "icon": "book-plus",
-                "screen": listNote(name="Liste des notes",id="listenote")
-            },
-             
-           
-           
+                "screen": ListNote(name="Liste des notes",id="listenote")
+            },  
         ]
-        
-
-
         # Ajouter chaque écran dans le ScreenManager
         for nav in self.list_navigation:
             current_screen.add_widget(nav["screen"])
@@ -255,12 +255,12 @@ class Note(MDScreen):
         if not textfield:  # Vérification si textfield est valide
             print("Erreur: textfield est None")
             return
-
+        
         menu_items = [
             {
                 "viewclass": "OneLineListItem",
                 "text": mat[1],
-                "on_release": lambda x=mat[1]: self.set_matiere(textfield, x,mat[0]),
+                "on_release": lambda x=mat: self.set_matiere(textfield, x[1],x[0]),
             } for mat in matiere.getAll()
         ]
         
@@ -274,18 +274,16 @@ class Note(MDScreen):
             self.menu.open()
 
     def set_matiere(self, textfield, value,id):
-        """Met à jour le champ et ferme le menu."""
-        if not textfield:
-            print("Erreur: textfield est None")
+
+        if not hasattr(self, 'ids') or 'listenote' not in self.ids:
+            print("Erreur: ID 'listenote' non trouvé")
             return
-
         textfield.text = value
-
-        
-        screen_liste_note = self.ids.listenote
-    
-        # screen_liste_note.set_matiere(id)
-
+        lstnote = self.ids.listenote
+        lstnote.set_matiere(str(id))
+        addnote = self.ids.addnote
+        addnote.set_matiere(str(id))
+        # print(id)
         if self.menu:
             self.menu.dismiss()
 

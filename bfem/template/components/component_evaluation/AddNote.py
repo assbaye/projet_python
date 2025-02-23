@@ -1,9 +1,12 @@
+from kivy.uix.accordion import StringProperty
 from kivymd.uix.behaviors.toggle_behavior import MDRectangleFlatIconButton
 from kivymd.uix.bottomsheet.bottomsheet import MDLabel
 from kivymd.uix.backdrop.backdrop import MDBoxLayout
 from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
 from kivymd.app import MDApp
+from bfem.database.anonymous import AnonymatDatabase
+from bfem.database.matiere import Matiere
 
 # color:
 # bleu clair =>CCEEFF
@@ -29,11 +32,12 @@ KV = """
             padding:[70,10]
             elevation:3
             MDBoxLayout:
-                # MDLabel:
-                #     text: 'Ajouter des notes'
-                #     halign:"center"
-                #     font_size:28
-                #     bold: True
+                MDLabel:
+                    id:matiere
+                    # text: 'Ajouter des notes'
+                    halign:"center"
+                    font_size:28
+                    bold: True
             MDBoxLayout:
                 spacing: '20dp'
                 MDTextField:
@@ -64,9 +68,19 @@ KV = """
 Builder.load_string(KV)
 
 class AddNote(MDScreen):
+    matiere = StringProperty("")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+  
+    def set_matiere(self,matiere_id):
+        matiere = Matiere().get_matiere(matiere_id)
+
+        self.matiere = matiere_id
+        self.ids.matiere.text ="Ajouter des notes de  "+ matiere[1]
+
+
 
 
 

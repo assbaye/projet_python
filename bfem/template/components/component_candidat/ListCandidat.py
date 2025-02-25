@@ -131,6 +131,13 @@ class ListeCandidats(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
+        
+        
+    
+       
+
+    def on_kv_post(self, *args):
+        self.load_candidats()
         self.cols = max(1, int(Window.width / 400))  # Chaque carte fait environ 400px de large
         self.ids.list.children[0].cols = self.cols
         all_candidats = Candidat().get_all_candidate()
@@ -146,11 +153,7 @@ class ListeCandidats(Screen):
 
         print(all_candidats)
         self.ids.list.data = candidats
-    
-       
-
-    # def on_kv_post(self, base_widget):
-    #     self.load_candidats()
+        
        
 # Appeler l'affichage ici
 

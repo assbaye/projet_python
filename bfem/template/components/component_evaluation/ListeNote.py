@@ -13,6 +13,7 @@ from kivymd.uix.datatables import MDDataTable
 from kivymd.uix.screen import MDScreen
 from bfem.database.matiere import Matiere
 from bfem.database.anonymous import AnonymatDatabase
+from bfem.database.examen import Examen
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -37,66 +38,55 @@ Builder.load_string(KV)
 class ListNote(MDScreen):
 
     id_matiere = StringProperty("Tous")
+    session = StringProperty("Session 1")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # box = MDBoxLayout(
-        #     MDLabel(
-        #         text=self.id_matiere,
-        #         id=matiere,
-        #         size_hint=[1,None],
-        #         halign="center",
-        #         bold=True,
-        #         font_size=28
-
-        #     ),
-        #     pos_hint={"top":1},
-        #     size_hint=[1,None],
-           
-
-        # )
-        # self.add_widget(box)
-        scroll_view = MDScrollView(
+        
+        
+        self.scroll_view = MDScrollView(
             pos_hint={"top":0.9}
         )
-        data_tables = MDDataTable(
+        self.data_tables = MDDataTable(
             
             use_pagination=True,
             check=True,
             column_data=[
                 ("No.", dp(30)),
+                ("Note.", dp(30)),
                 ("Anonymats", dp(30)),
-                ("matieres", dp(30)),
-                ("Candidats", dp(30)),
-                ("Session", dp(30))
+                
                
             ],
-            row_data=self.getdata(self.id_matiere),
+            row_data=self.getdata(),
             sorted_on="Schedule",
             sorted_order="ASC",
             elevation=2,
         )
-        data_tables.bind(on_row_press=self.on_row_press)
-        data_tables.bind(on_check_press=self.on_check_press)
-        scroll_view.add_widget(data_tables)
-        self.add_widget(scroll_view)
+        self.data_tables.bind(on_row_press=self.on_row_press)
+        self.data_tables.bind(on_check_press=self.on_check_press)
+        self.scroll_view.add_widget(self.data_tables)
+        self.add_widget(self.scroll_view)
         # self.set_matiere(18)
     
+    def set_session(self, session):
+        self.session = session
+        self.update_table()
+       
+     
     def set_matiere(self,id_matiere):
         matiere = Matiere().get_matiere(id_matiere)
         self.id_matiere = id_matiere
-        print(matiere[1])
-        # self.ids.matiere.text ="Ajouter des notes de  "+matiere[1]
+        self.update_table()
         self.ids.l_matiere.text = "Liste des notes de " + matiere[1]
-        print(self.ids.l_matiere.text)
+     
     
-    def getdata(self,id_materiel=None):
+    def update_table(self):
+        self.data_tables.row_data = self.getdata()
+    
+    def getdata(self):
         
-        interface_anonymous = AnonymatDatabase()
-        if id_materiel:
-            return  interface_anonymous.get_anomonymat_by_matiere(id_materiel)
-        return interface_anonymous.getAll()
+        return Examen().get_all_note() 
 
         
 

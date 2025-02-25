@@ -51,15 +51,16 @@ class Candidat:
                         epr_facultative VARCHAR(125) CHECK (epr_facultative IN ('Couture','Dessin','Musique','Neutre')),
                         etablissement VARCHAR(250),
                         aptitude_sportive BOOL default(1),
+                        lv2_pc VARCHAR(10) ,
                         type_candidats VARCHAR(125) CHECK (type_candidats IN ('Officiel','Libre'))
                         )"""
                         )
         
 
-    def add_candidate(self, prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, epr_facultative, etablissement, aptitude_sportive,type):
+    def add_candidate(self, prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, epr_facultative, etablissement, aptitude_sportive,lv2,type):
             try:
-                self.db.execute("INSERT INTO candidats (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, epr_facultative, etablissement, aptitude_sportive,type_candidats) VALUES (?,?,?,?,?,?,?,?,?,?)",
-                    (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite,  epr_facultative, etablissement, aptitude_sportive,type))
+                self.db.execute("INSERT INTO candidats (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, epr_facultative, etablissement, aptitude_sportive,lv2_pc,type_candidats) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                    (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite,  epr_facultative, etablissement, aptitude_sportive,lv2,type))
                
                 return self.db.fetchall("SELECT  * FROM candidats ORDER BY id DESC  LIMIT 1")
             except Exception as e:

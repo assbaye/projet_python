@@ -153,8 +153,11 @@ class Evaluation(MDScreen):
         )
         self.menu.open()
 
-    def select_matiere(self, matiere):
-        self.ids.session.text = matiere
+    def select_matiere(self, session):
+        self.ids.session.text = session
+        self.ids.listdeliveration.set_session(session)
+        self.ids.anonymat.set_session(session)
+        self.ids.note.set_session(session)
         self.menu.dismiss()
        
  

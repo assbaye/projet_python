@@ -10,6 +10,7 @@ from .component_candidat.ListCandidat import ListeCandidats
 
 KV = """
 <Candidat> :
+    id:base_candidat
     MDNavigationLayout:
 
         MDScreenManager:
@@ -31,10 +32,11 @@ KV = """
                        
                     ScreenManager:
                         id:screen_manager_current
-                        # AddCandidat:
-                            
-                        # ListeCandidats:
-                        #     id:listeCandidat
+                        ListeCandidats:
+                            id:listeCandidat
+                        AddCandidat:
+                            id:addcandidat
+                        
                 
 """
 Builder.load_string(KV)

@@ -53,10 +53,6 @@ KV = """
                             size_hint_x: None
                         Widget:
                             size_hint_x:0.6
-                        MDLabel:
-                            id:view_session
-                            text: root.session
-                            
 
                         MDBoxLayout:
                             id: nav_plus
@@ -96,15 +92,19 @@ KV = """
 Builder.load_string(KV)
 
 class Note(MDScreen):
+
     session = StringProperty("Session 1")
     
     def __init__(self, *args,**kwargs):
         super().__init__(*args,**kwargs)
     
-    def setsession(self,session):
-        self.session = session 
-        print(session)
-        self.ids.view_session.text = session
+
+
+    def set_session(self, session):
+        self.session = session
+     
+        
+       
 
 
         
@@ -143,97 +143,18 @@ class Note(MDScreen):
             )
             box_layout.add_widget(bouton_navigation)
         
-        # self.ids.nav_plus.add_widget(MDTextField(
-        #     id="selected_matiere",
-        #     hint_text="Matiere",
-        #     size_hint=[1,None],
-        #     height= "40dp",
-        #     readonly= True,
-        #     on_focus =self.open_menu(),
-        #     pos_hint={"bottom": 1},
-        #     ))
-
-
-    
-
-        imprimer = MDFlatButton(
-            text="Imprimer",
-            icon="printer",
-            
-        )
-        box_layout.add_widget(imprimer)
         
        
 
     def switch_navigation(self,instance,screen_manager_content=None):
        
-        """
-        On l'appel si on veut changer d'ecran
-        """
-        screen_name = instance.text  # Utilisation du texte du bouton pour identifier l'écran
-        # screen_manager_content.current = screen_name
+        screen_name = instance.text  
 
         for nav in self.list_navigation:
             if nav["text"] == screen_name:
                 screen_manager_content.current = nav["screen"].name
-                return
-    # def addnavigation(self):
-           # Accéder à l'ID 'navigation' du fichier KV
-        # box_layout = self.ids.navigation
-        # current_screen = self.ids.screen_manager_current
-
-        # # Liste des éléments de navigation
-        # self.list_navigation = [
-        #     {
-        #         "text": "Ajouter un note",
-        #         "icon": "book-plus",
-        #         "screen": AddNote(name="ajouter des note")
-        #     },
-        #      {
-        #         "text": "Liste des notes",
-        #         "icon": "book-plus",
-        #         "screen": listNote(name="Liste des notes",id="listenote")
-        #     },
-             
-           
-           
-        # ]
-        
-
-
-        # # Ajouter chaque écran dans le ScreenManager
-        # for nav in self.list_navigation:
-        #     current_screen.add_widget(nav["screen"])
-
-        # # Créer les boutons pour chaque élément de navigation
-        # for nav in self.list_navigation:
-        #     bouton_navigation = MDFlatButton(
-        #         icon=nav["icon"],
-        #         text=nav["text"],
-        #         md_bg_color="#256D94",
-        #         theme_text_color="Custom",
-        #         text_color="#ffffff",
-        #         on_press=lambda instance, screen_manager_content=current_screen: self.switch_navigation(instance, screen_manager_content)
-        #     )
-        #     box_layout.add_widget(bouton_navigation)
-        
-        # # self.ids.nav_plus.add_widget(MDTextField(
-        # #     id="selected_matiere",
-        # #     hint_text="Matiere",
-        # #     size_hint=[1,None],
-        # #     height= "40dp",
-        # #     readonly= True,
-        # #     on_focus =self.open_menu(),
-        # #     pos_hint={"bottom": 1},
-        # #     ))
-
-
-        
-
-
-
-
-        
+                return     
+                
     def open_menu(self,text_field):
         print("IDs disponibles:", self.parent)
         interface_matiere = Matiere()
@@ -248,11 +169,7 @@ class Note(MDScreen):
         )
         self.menu.open()
 
-    def select_matiere(self, matiere):
-        self.root.ids.selected_matiere.text = matiere
-        self.menu.dismiss()
-        self.afficher_notes(matiere)  # Affichage automatique des notes
- 
+  
     def show_dropdown(self, textfield):
         """Affiche le menu déroulant sous le champ MDTextField."""
         matiere = Matiere()
@@ -287,20 +204,11 @@ class Note(MDScreen):
         lstnote.set_matiere(str(id))
         addnote = self.ids.addnote
         addnote.set_matiere(str(id))
-        # print(id)
+        
         if self.menu:
             self.menu.dismiss()
 
-    def afficher_notes(self):
-        matiere = self.root.ids.selected_matiere.text
-        notes_list = self.root.ids.notes_list
-        notes_list.clear_widgets()
-
-        if matiere and matiere in self.matieres_notes:
-            for note in self.matieres_notes[matiere]:
-                notes_list.add_widget(OneLineListItem(text=f"Note : {note}"))
-        else:
-            notes_list.add_widget(OneLineListItem(text="Aucune note disponible"))
+   
 
     
 # class test(MDApp):

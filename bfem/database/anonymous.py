@@ -24,16 +24,22 @@ class AnonymatDatabase:
                 candidat_id INTEGER,
                 examen TEXT,
                 FOREIGN KEY (candidat_id) REFERENCES candidats(id),
-                FOREIGN KEY (matiere_id) REFERENCES matieres(id)
+                FOREIGN KEY (matiere_id) REFERENCES matieres(id),
+                UNIQUE(matiere_id,candidat_id,examen)
             )
             """
         )
+      
+    
+    def verifie_anonymat(self,matiere_id,anonymat,session):
+        print(session)
+        return self.db.fetchall("SELECT * FROM anonymats WHERE matiere_id=? and examen=? and numero=?",(matiere_id,session,anonymat ))
 
-    def get_anomonymat_by_matiere(self,matiere_id):
-        return self.db.fetchall("SELECT * FROM anonymats WHERE matiere_id=?",(matiere_id, ))
+    def get_anomonymat_by_matiere(self,matiere_id,session):
+        return self.db.fetchall("SELECT * FROM anonymats WHERE matiere_id=? and examen=?",(matiere_id,session ))
 
     def getAll(self):
-        return self.db.fetchall("SELECT * FROM anonymats ")
+        return self.db.fetchall("SELECT * FROM anonymats ") 
 
     def get_matieres(self):
         query = "SELECT nom_matiere FROM matieres"

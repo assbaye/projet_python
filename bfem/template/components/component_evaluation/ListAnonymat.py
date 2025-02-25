@@ -23,19 +23,24 @@ KV = """
             font_size:28
             bold: True
             pos_hint: {'top': 1}
+    MDScrollView:
+        id:data 
+        pos_hint: {'top': 0.9}
 """
 Builder.load_string(KV)
 
 class ListAnonymat(MDScreen):
-    
+    session = StringProperty("Session 1")
     id_matiere = StringProperty("Tous")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.scroll_view = MDScrollView(
-            pos_hint={"top":0.9}
+            pos_hint={"top":0.9},
+            id="data"
         )
         self.data_tables = MDDataTable(
+            # ids="data",
             use_pagination=True,
             check=True,
             column_data=[
@@ -45,7 +50,7 @@ class ListAnonymat(MDScreen):
                 ("Num Table", dp(30)),
                 ("Session", dp(30)),
             ],
-            row_data=self.getdata(self.id_matiere),
+            row_data=self.getdata(self.id_matiere,self.session),
             sorted_on="Schedule",
             sorted_order="ASC",
             elevation=2,
@@ -55,6 +60,10 @@ class ListAnonymat(MDScreen):
         self.scroll_view.add_widget(self.data_tables)
         self.add_widget(self.scroll_view)
     
+    def set_session(self, session):
+        self.session = session
+        self.update_table()
+     
     def set_matiere(self, id_matiere):
         matiere = Matiere().get_matiere(id_matiere)
         self.id_matiere = id_matiere
@@ -62,13 +71,13 @@ class ListAnonymat(MDScreen):
         self.update_table()  # Met à jour la table lorsque id_matiere change
     
     def update_table(self):
-        # Met à jour les données de la table en fonction de id_matiere
-        self.data_tables.row_data = self.getdata(self.id_matiere)
+        self.data_tables.row_data = self.getdata(self.id_matiere,self.session)
     
-    def getdata(self, id_matiere=None):
+    def getdata(self, id_matiere,session):
         interface_anonymous = AnonymatDatabase()
         if id_matiere:
-            return interface_anonymous.get_anomonymat_by_matiere(id_matiere)
+            return interface_anonymous.get_anomonymat_by_matiere(id_matiere,session=session)
+        
         return interface_anonymous.getAll()
 
     def on_row_press(self, instance_table, instance_row):

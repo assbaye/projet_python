@@ -152,11 +152,19 @@ KV = """
 
 Builder.load_string(KV)
 class Anonymat(MDScreen):
+
+    session = StringProperty("Session 1")
     matiere_id = StringProperty('')
     listAnonymat_matiere = ListProperty()
+
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     
+    def set_session(self, session):
+        self.session = session
+        self.ids.listano.set_session(session)
+     
     def on_kv_post(self, base_widget):
         box_layout = self.ids.navigation
         current_screen = self.ids.screen_manager_current
@@ -195,6 +203,7 @@ class Anonymat(MDScreen):
             text_color="#ffffff",
             
         )
+        imprimer.bind(on_release=lambda instance: self.imprimer_donnees(instance))
         box_layout.add_widget(imprimer)
         Generer = MDFlatButton(
             id="generer_action",
@@ -206,7 +215,7 @@ class Anonymat(MDScreen):
             
             
         )
-        Generer.bind(on_release=lambda instance: self.generer_anonymats())
+        Generer.bind(on_release=lambda instance: self.generer_anonymats(instance))
 
         box_layout.add_widget(Generer)
     # def generer_anonymat(self):
@@ -267,45 +276,8 @@ class Anonymat(MDScreen):
         if self.menu:
             self.menu.dismiss()
 
-    # def afficher_notes(self):
-    #     matiere = self.root.ids.selected_matiere.text
-    #     notes_list = self.root.ids.notes_list
-    #     notes_list.clear_widgets()
-        
-    #     if matiere and matiere in self.matieres_notes:
-    #         for note in self.matieres_notes[matiere]:
-    #             notes_list.add_widget(OneLineListItem(text=f"Note : {note}"))
-    #     else:
-    #         notes_list.add_widget(OneLineListItem(text="Aucune note disponible"))
-
-
+    
    
-    # def on_start(self):
-    #     # Charger les matières dans le Spinner
-    #     matieres = self.anonymat_db.get_matieres()
-    #     matiere_spinner = self.root.ids.matiere_spinner
-
-    #     # Ajouter toutes les matières dans le Spinner
-    #     if matieres:
-    #         matiere_spinner.values = matieres
-    #         matiere_spinner.text = matieres[0]  # Sélectionner la première matière par défaut
-    #         self.update_table(matieres[0])  # Charger les anonymats pour la première matière
-    #     else:
-    #         matiere_spinner.text = "Aucune matière"
-
-    # def update_table(self, selected_matiere):
-    #     """ Met à jour le tableau avec les anonymats de la matière sélectionnée """
-    #     if selected_matiere:
-    #         anonymats = self.anonymat_db.afficher_anonymats(selected_matiere)
-    #         container = self.root.ids.table_container
-    #         container.clear_widgets()
-
-    #         for candidat_id, numero_anonymat in anonymats:
-    #             row = BoxLayout(size_hint_y=None, height=dp(40))
-    #             row.add_widget(MDLabel(text=str(candidat_id), size_hint_x=0.5))
-    #             row.add_widget(MDLabel(text=str(numero_anonymat), size_hint_x=0.5))
-    #             container.add_widget(row)
-
 
 
     def generer_anonymats(self,*arg,):
@@ -314,7 +286,7 @@ class Anonymat(MDScreen):
         selected_matiere = self.ids.selected_matiere.text
        
           
-        print(self.matiere_id)
+        # print(self.matiere_id)
         if  self.matiere_id :
            
             allcanidats = Candidat().get_all_candidate()
@@ -322,8 +294,8 @@ class Anonymat(MDScreen):
                 
             for candidat in allcanidats:
                
-               stat = interface_ano.generer_anonymat(candidat_id=candidat[0],matiere_id=self.matiere_id,examen="1")
-               print(stat)
+               stat = interface_ano.generer_anonymat(candidat_id=candidat[0],matiere_id=self.matiere_id,examen=self.session)
+               
             self.ids.listano.set_matiere(self.matiere_id)
 
         else :
@@ -346,64 +318,56 @@ class Anonymat(MDScreen):
 
    
 
-    def imprimer_anonymats(self):
-        container = self.root.ids.table_container
-        if container.children:
-            print("Début de l'impression...")  # Message de débogage
+    def imprimer_donnees(self, instance):
+        """Imprime les données de la table sous forme de PDF."""
+        # Récupérer les données de la table
+        data = self.ids.listano.data_tables.row_data
 
-            # Création du PDF
-            pdf_file = "anonymats.pdf"
-            try:
-                doc = SimpleDocTemplate(pdf_file, pagesize=A4)
-                elements = []
+        if not data:
+            print("Aucune donnée à imprimer.")
+            return
 
-                # Ajouter un titre
-                title = [["Liste des Anonymats"]]
-                title_table = Table(title)
-                title_table.setStyle(TableStyle([
-                    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                    ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
-                    ('FONTSIZE', (0, 0), (-1, -1), 18),
-                    ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
-                ]))
-                elements.append(title_table)
-                elements.append(Table([[" "]]))  # Espace entre le titre et le tableau
+        # Création du PDF
+        pdf_file = "anonymats_impression"+str(randint(1,1000))+".pdf"
+        try:
+            doc = SimpleDocTemplate(pdf_file, pagesize=A4)
+            elements = []
 
-                # Ajouter les en-têtes du tableau
-                data = [["Numéro de tableau", "Anonymat"]]
+            # Ajouter un titre
+            title = [["Liste des Anonymats"]]
+            title_table = Table(title)
+            title_table.setStyle(TableStyle([('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                                            ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+                                            ('FONTSIZE', (0, 0), (-1, -1), 18),
+                                            ('BOTTOMPADDING', (0, 0), (-1, -1), 12)]))
+            elements.append(title_table)
+            elements.append(Table([[" "]]))  # Ajouter un espace entre le titre et le tableau
 
-                # Récupérer les anonymats affichés dans le tableau
-                for row in reversed(container.children):
-                    candidat_id = row.children[1].text  # Le texte du premier MDLabel
-                    numero_anonymat = row.children[0].text  # Le texte du second MDLabel
-                    print(f"Ajout au PDF : {candidat_id}, {numero_anonymat}")  # Débogage
-                    data.append([candidat_id, numero_anonymat])
+            # Ajouter les en-têtes du tableau
+            headers = ["Numéro de tableau", "Anonymat", "Id matiere", "Num Table", "Session"]
+            data_table = [headers] + data  # Ajouter les données de la table
+            table = Table(data_table)
+            table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 14),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ]))
+            elements.append(table)
 
-                # Créer le tableau pour le PDF
-                table = Table(data)
-                table.setStyle(TableStyle([
-                    ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                    ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                    ('FONTSIZE', (0, 0), (-1, 0), 14),
-                    ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
-                    ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                    ('GRID', (0, 0), (-1, -1), 1, colors.black),
-                ]))
-                elements.append(table)
+            # Génération du PDF
+            doc.build(elements)
+            print(f"PDF généré : {pdf_file}")
 
-                # Génération du PDF
-                doc.build(elements)
-                print(f"PDF généré : {pdf_file}")
+            # Ouvrir le PDF (multiplateforme)
+            webbrowser.open_new(pdf_file)
 
-                # Ouvrir le PDF (multiplateforme)
-                webbrowser.open_new(pdf_file)
-
-            except Exception as e:
-                print(f"Erreur lors de la génération du PDF : {e}")
-        else:
-            print("Aucun anonymat à imprimer.")
+        except Exception as e:
+            print(f"Erreur lors de la génération du PDF : {e}")
 
 # class Example(MDApp):
 #     def build(self):

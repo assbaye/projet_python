@@ -114,9 +114,9 @@ class LoginScreen(MDScreen):
             mdp.helper_text_mode = "on_error"
             mdp.helper_text = "Veuillez entrer un mot de passe."
           
-        app.connect("baseapp")  
-        interjury = Jury()
-        connect = interjury.login(telephone.text,motdepasse.text)
+        # app.connect("baseapp")  
+        # interjury = Jury()
+        # connect = interjury.login(telephone.text,motdepasse.text)
         if motdepasse.ids.text_field.text =="1234" and telephone.text == "770000918" :
             app.connect("baseapp")  
         else : 

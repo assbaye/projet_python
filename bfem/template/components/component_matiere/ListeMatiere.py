@@ -17,46 +17,31 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 
 KV="""
-<ListNote>:
+<ListeMatiere>:
     MDBoxLayout:
         id: contenaire
+        
         size_hint:[1,None]
         pos_hint: {'top':1}
         MDLabel:
-            text: root.id_matiere
+            text: "Liste des matieres"
             id:l_matiere
             # text: 'Ajouter des notes'
             halign:"center"
             font_size:28
             bold: True
             pos_hint: {'top': 1}
-      
+     
 """
 Builder.load_string(KV)
 
-class ListNote(MDScreen):
+class ListeMatiere(MDScreen):
 
     id_matiere = StringProperty("Tous")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # box = MDBoxLayout(
-        #     MDLabel(
-        #         text=self.id_matiere,
-        #         id=matiere,
-        #         size_hint=[1,None],
-        #         halign="center",
-        #         bold=True,
-        #         font_size=28
-
-        #     ),
-        #     pos_hint={"top":1},
-        #     size_hint=[1,None],
-           
-
-        # )
-        # self.add_widget(box)
         scroll_view = MDScrollView(
             pos_hint={"top":0.9}
         )
@@ -66,13 +51,11 @@ class ListNote(MDScreen):
             check=True,
             column_data=[
                 ("No.", dp(30)),
-                ("Anonymats", dp(30)),
-                ("matieres", dp(30)),
-                ("Candidats", dp(30)),
-                ("Session", dp(30))
+                ("Nom", dp(60)),
+                ("Coefficient", dp(40)),
                
             ],
-            row_data=self.getdata(self.id_matiere),
+            row_data=self.getdata(),
             sorted_on="Schedule",
             sorted_order="ASC",
             elevation=2,
@@ -83,24 +66,13 @@ class ListNote(MDScreen):
         self.add_widget(scroll_view)
         # self.set_matiere(18)
     
-    def set_matiere(self,id_matiere):
-        matiere = Matiere().get_matiere(id_matiere)
-        self.id_matiere = id_matiere
-        print(matiere[1])
-        # self.ids.matiere.text ="Ajouter des notes de  "+matiere[1]
-        self.ids.l_matiere.text = "Liste des notes de " + matiere[1]
-        print(self.ids.l_matiere.text)
+   
     
-    def getdata(self,id_materiel=None):
-        
-        interface_anonymous = AnonymatDatabase()
-        if id_materiel:
-            return  interface_anonymous.get_anomonymat_by_matiere(id_materiel)
-        return interface_anonymous.getAll()
+    def getdata(self):
 
-        
+       return Matiere().getAll() 
+       
 
-    
     def on_row_press(self, instance_table, instance_row):
         '''Called when a table row is clicked.'''
 
@@ -133,12 +105,3 @@ class ListNote(MDScreen):
 
 
 
-
-# class Example(MDApp):
-    
-#     def build(self):
-        
-#         return ListNote()
-
-
-# Example().run()

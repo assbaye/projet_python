@@ -1,3 +1,4 @@
+from kivymd.uix.bottomsheet.bottomsheet import MDLabel
 from kivy.uix.effectwidget import Rectangle
 from kivy.uix.accordion import StringProperty
 from kivymd.uix.banner.banner import OneLineListItem
@@ -52,6 +53,10 @@ KV = """
                             size_hint_x: None
                         Widget:
                             size_hint_x:0.6
+                        MDLabel:
+                            id:view_session
+                            text: root.session
+                            
 
                         MDBoxLayout:
                             id: nav_plus
@@ -70,7 +75,7 @@ KV = """
                                 height: "40dp"
                                 readonly: True
                                 width:200
-                               
+                                model:"rectangle"
                                 on_focus:if self.focus: root.show_dropdown(self)
                                 pos_hint:{"bottom": 1}
             
@@ -91,9 +96,16 @@ KV = """
 Builder.load_string(KV)
 
 class Note(MDScreen):
+    session = StringProperty("Session 1")
     
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def setsession(self,session):
+        self.session = session 
+        print(session)
+        self.ids.view_session.text = session
+
 
         
        
@@ -142,17 +154,14 @@ class Note(MDScreen):
         #     ))
 
 
-        
+    
 
-
-
-
-        # imprimer = MDFlatButton(
-        #     text="Imprimer",
-        #     icon="printer",
+        imprimer = MDFlatButton(
+            text="Imprimer",
+            icon="printer",
             
-        # )
-        # box_layout.add_widget(imprimer)
+        )
+        box_layout.add_widget(imprimer)
         
        
 
@@ -224,12 +233,7 @@ class Note(MDScreen):
 
 
 
-        # # imprimer = MDFlatButton(
-        # #     text="Imprimer",
-        # #     icon="printer",
-            
-        # # )
-        # # box_layout.add_widget(imprimer)
+        
     def open_menu(self,text_field):
         print("IDs disponibles:", self.parent)
         interface_matiere = Matiere()

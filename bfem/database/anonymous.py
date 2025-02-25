@@ -1,5 +1,7 @@
 from .bdd import bdd  
 
+from random import randint
+
 
 class AnonymatDatabase:
     def __init__(self):
@@ -33,6 +35,21 @@ class AnonymatDatabase:
     def getAll(self):
         return self.db.fetchall("SELECT * FROM anonymats ")
 
+    def get_matieres(self):
+        query = "SELECT nom_matiere FROM matieres"
+        result = self.db.fetchall(query)
+        return [row[0] for row in result]
+    
+    def afficher_anonymats(self, matiere):
+        query = """
+            SELECT candidats.id, anonymats.numero
+            FROM anonymats
+            JOIN candidats ON anonymats.candidat_id = candidats.id
+            JOIN matieres ON anonymats.matiere_id = matieres.id
+            WHERE matieres.nom_matiere = ?
+        """
+        return self.db.fetchall(query, (matiere,))
+    
     def generer_anonymat(self, candidat_id, matiere_id, examen):
         """
         Génère et insère un anonymat pour un candidat et une matière donnée.
@@ -43,7 +60,7 @@ class AnonymatDatabase:
         :return: Numéro anonymat généré ou None en cas d'erreur
         """
         try:
-            numero_anonymat = candidat_id * 100 + matiere_id  # Génération d'un numéro anonymat unique
+            numero_anonymat = int(candidat_id) * randint(100,10000) + int(matiere_id)  # Génération d'un numéro anonymat unique
             self.db.execute(
                 "INSERT INTO anonymats (numero, matiere_id, candidat_id, examen) VALUES (?, ?, ?, ?)",
                 (numero_anonymat, matiere_id, candidat_id, examen),

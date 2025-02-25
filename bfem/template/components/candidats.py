@@ -1,3 +1,4 @@
+from kivy.uix.accordion import BooleanProperty
 from kivymd.uix.behaviors.toggle_behavior import MDRectangleFlatIconButton
 from kivymd.uix.bottomsheet.bottomsheet import MDLabel
 # from kivymd.uix.bottomnavigation.bottomnavigation import MDScreen
@@ -5,6 +6,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
 from .component_candidat.AddCandidat import AddCandidat
+from .component_candidat.ListCandidat import ListeCandidats
 
 KV = """
 <Candidat> :
@@ -29,11 +31,16 @@ KV = """
                        
                     ScreenManager:
                         id:screen_manager_current
+                        # AddCandidat:
+                            
+                        # ListeCandidats:
+                        #     id:listeCandidat
                 
 """
 Builder.load_string(KV)
 
 class Candidat(MDScreen):
+    statdata = BooleanProperty(True)
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.padding = 20
@@ -53,6 +60,8 @@ class Candidat(MDScreen):
         for nav in self.list_navigation:
             if nav["text"] == screen_name:
                 screen_manager_content.current = nav["screen"].name
+                if nav["screen"].name == " ListeCandidat":
+                    self.ids.listeCandidat.load_ListeCandidat()
                 return
     def addnavigation(self):
            # Accéder à l'ID 'navigation' du fichier KV
@@ -61,13 +70,18 @@ class Candidat(MDScreen):
 
         # Liste des éléments de navigation
         self.list_navigation = [
+             {
+                "text": "Liste des candidats",
+                "icon": "book-plus",
+                "screen": ListeCandidats(name="ListeCandidat")
+            },
+           
             {
                 "text": "Ajouter un candidat",
                 "icon": "book-plus",
                 "screen": AddCandidat(name="addCandidat")
             },
-           
-        
+            
            
            
         ]

@@ -29,10 +29,10 @@ class Matiere:
 
     def add_matiere(self, nom_matiere, coefficient):
         try:
-            self.db.execute("INSERT INTO matieres (nom_matiere,coefficient) VALUES (?,?)",
-                            ( nom_matiere, coefficient))
+            self.db.execute("INSERT INTO matieres (nom_matiere,coefficient) VALUES (?,?)",( nom_matiere, coefficient))
             return True
-        except Exception:
+        except Exception as e:
+            print(f"Erreur lors de l'ajout du candidat : {str(e)}")  # Affichage de l'erreur
             return False
 
     def get_matiere(self, matiere_id):

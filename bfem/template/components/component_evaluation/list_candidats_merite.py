@@ -41,4 +41,4 @@ class ListeMeriteScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
     def on_enter(self, *args):
-        self.ids.student_list.refresh_data()  # This method is called every time the screen becomes active
+        self.ids.student_list.refresh_data()  

@@ -1,4 +1,6 @@
-from bdd import bdd  
+from .bdd import bdd  
+
+from random import randint
 
 class AnonymatDatabase:
     def __init__(self):
@@ -22,12 +24,43 @@ class AnonymatDatabase:
                 session INTEGER,
                 examen TEXT,
                 FOREIGN KEY (candidat_id) REFERENCES candidats(id),
-                FOREIGN KEY (matiere_id) REFERENCES matieres(id)
+                FOREIGN KEY (matiere_id) REFERENCES matieres(id),
+                UNIQUE(matiere_id,candidat_id,examen)
             )
             """
         )
+      
+    
+    def verifie_anonymat(self,matiere_id,anonymat,session):
+        # print(session)
+        return self.db.fetchall("""
+                                SELECT e.note
+                                FROM anonymats a 
+                                JOIN examens e ON e.anonymat_id =a.numero 
+                                WHERE a.matiere_id=? and a.examen=? and a.numero=?""",(matiere_id,session,anonymat ))
 
-    def generer_anonymat(self, candidat_id, matiere_id, session, examen):
+    def get_anomonymat_by_matiere(self,matiere_id,session):
+        return self.db.fetchall("SELECT * FROM anonymats WHERE matiere_id=? and examen=?",(matiere_id,session ))
+
+    def getAll(self):
+        return self.db.fetchall("SELECT * FROM anonymats ") 
+
+    def get_matieres(self):
+        query = "SELECT nom_matiere FROM matieres"
+        result = self.db.fetchall(query)
+        return [row[0] for row in result]
+    
+    def afficher_anonymats(self, matiere):
+        query = """
+            SELECT candidats.id, anonymats.numero
+            FROM anonymats
+            JOIN candidats ON anonymats.candidat_id = candidats.id
+            JOIN matieres ON anonymats.matiere_id = matieres.id
+            WHERE matieres.nom_matiere = ?
+        """
+        return self.db.fetchall(query, (matiere,))
+    
+    def generer_anonymat(self, candidat_id, matiere_id, examen):
         """
         Génère et insère un anonymat pour un candidat et une matière donnée, en tenant compte de la session.
 
@@ -38,7 +71,7 @@ class AnonymatDatabase:
         :return: Numéro anonymat généré ou None en cas d'erreur
         """
         try:
-            numero_anonymat = session * 10000 + candidat_id * 100 + matiere_id  # Génération du numéro anonymat unique
+            numero_anonymat = int(candidat_id) * randint(100,10000) + int(matiere_id)  # Génération d'un numéro anonymat unique
             self.db.execute(
                 "INSERT INTO anonymats (numero, matiere_id, candidat_id, session, examen) VALUES (?, ?, ?, ?, ?)",
                 (numero_anonymat, matiere_id, candidat_id, session, examen),

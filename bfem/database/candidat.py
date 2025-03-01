@@ -5,7 +5,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 from reportlab.lib.units import inch
 import os
-#  - Numero de table : Entier
+#     - Numero de table : Entier
 #     - Prenom_s : Chaine de caractères
 #     - Nom : Chaine de caractères
 #     - Date_naissance : Date
@@ -14,7 +14,7 @@ import os
 #     - Nationalite : Chaine de caractères
 #     - Choix_epr_facultaive : Booleen
 #     - etablissement
-#     - Epreuve_Facultaive : Chaine de caractères
+#     - Epreuve_Facultative : Chaine de caractères
 #     - Aptitude_sportive : Boolean
 
 """"
@@ -48,10 +48,11 @@ class Candidat:
                         lieu_naissance VARCHAR(125) NOT NULL,
                         sexe CHAR(2) CHECK(sexe IN ('H','F')),
                         nationalite Text NOT NULL,
-                        choix_epr_facultative BOOL NOT NULL DEFAULT(0),
                         epr_facultative VARCHAR(125) CHECK (epr_facultative IN ('Couture','Dessin','Musique','Neutre')),
                         etablissement VARCHAR(250),
-                        aptitude_sportive BOOL default(1)
+                        aptitude_sportive BOOL default(1),
+                        lv2_pc VARCHAR(10) ,
+                        type_candidats VARCHAR(125) CHECK (type_candidats IN ('Officiel','Libre'))
                         )"""
                         )
         # Ajouter les nouvelles colonnes si elles n'existent pas déjà
@@ -71,17 +72,18 @@ class Candidat:
                 self.db.execute(f"ALTER TABLE candidats ADD COLUMN {col} {col_type}")
         
 
-    def add_candidate(self, prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive,moyenne_6e,moyenne_5e,moyenne_4e,moyenne_3e,lv2,type_candidat,nombre_fois):
+    def add_candidate(self, prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, epr_facultative, etablissement, aptitude_sportive,lv2,type):
             try:
-                self.db.execute("INSERT INTO candidats (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive,moyenne_6e,moyenne_5e,moyenne_4e,moyenne_3e,lv2,type_candidat,nombre_fois) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, choix_epr_facultative, epr_facultative, etablissement, aptitude_sportive,moyenne_6e,moyenne_5e,moyenne_4e,moyenne_3e,lv2,type_candidat,nombre_fois))
-                self.db.commit()  
-                return True
+                self.db.execute("INSERT INTO candidats (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite, epr_facultative, etablissement, aptitude_sportive,lv2_pc,type_candidats) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                    (prenom, nom, date_naissance, lieu_naissance, sexe, nationalite,  epr_facultative, etablissement, aptitude_sportive,lv2,type))
+               
+                return self.db.fetchall("SELECT  * FROM candidats ORDER BY id DESC  LIMIT 1")
             except Exception as e:
                 print(f"Erreur lors de l'ajout du candidat : {str(e)}")  # Affichage de l'erreur
                 return False
         
 
-    
+  
     def get_candidate(self,candidate_id):
 
         try :
@@ -104,7 +106,7 @@ class Candidat:
             return False
     
 
-    def update_candidate(self,candidate_id,prenom = None,nom= None,date_naissance= None,lieu_naissance= None,sexe= None,nationalite= None,choix_epr_facultative= None,epr_facultative= None,etablissement= None,aptitude_sportive= None,moyenne_6e= None,moyenne_5e= None,moyenne_4e= None,moyenne_3e= None,lv2= None,type_candidat= None,nombre_fois= None):
+    def update_candidate(self,candidate_id,prenom = None,nom= None,date_naissance= None,lieu_naissance= None,sexe= None,nationalite= None,epr_facultative= None,etablissement= None,aptitude_sportive= None,type_candidats=None):
        
        query = "UPDATE candidats SET "
        values = []
@@ -133,13 +135,15 @@ class Candidat:
             query +="nationalite=?, "
             values.append(nationalite)
 
-       if choix_epr_facultative:
-        query+="choix_epr_facultative=?, "
-        values.append(choix_epr_facultative)
+      
 
        if epr_facultative:
             query+= "epr_facultative= ?, "
             values.append(epr_facultative)
+       
+       if type_candidats:
+            query+= "type_candidats= ?, "
+            values.append(type_candidats)
 
        if etablissement:
             query += "etablissement= ?, "
@@ -148,27 +152,27 @@ class Candidat:
        if aptitude_sportive:
             query += "aptitude_sportive= ?, "
             values.append(aptitude_sportive)
-       if moyenne_6e:
-            query += "moyenne_6e= ?, "
-            values.append(moyenne_6e)
-       if moyenne_5e:
-            query += "moyenne_5e= ?, "
-            values.append(moyenne_5e)
-       if moyenne_4e:
-            query += "moyenne_4e= ?, "
-            values.append(moyenne_4e) 
-       if moyenne_3e:
-            query += "moyenne_3e= ?, "
-            values.append(moyenne_3e)
-       if lv2:
-            query += "lv2= ?, "
-            values.append(lv2)   
-       if type_candidat:
-            query += "type_candidat= ?, "
-            values.append(type_candidat) 
-       if nombre_fois:
-            query += "nombre_fois= ?, "
-            values.append(nombre_fois)
+     #   if moyenne_6e:
+     #        query += "moyenne_6e= ?, "
+     #        values.append(moyenne_6e)
+     #   if moyenne_5e:
+     #        query += "moyenne_5e= ?, "
+     #        values.append(moyenne_5e)
+     #   if moyenne_4e:
+     #        query += "moyenne_4e= ?, "
+     #        values.append(moyenne_4e) 
+     #   if moyenne_3e:
+     #        query += "moyenne_3e= ?, "
+     #        values.append(moyenne_3e)
+     #   if lv2:
+     #        query += "lv2= ?, "
+     #        values.append(lv2)   
+     #   if type_candidat:
+     #        query += "type_candidat= ?, "
+     #        values.append(type_candidat) 
+     #   if nombre_fois:
+     #        query += "nombre_fois= ?, "
+     #        values.append(nombre_fois)
              
        query = query.rstrip(", ")
        query += " WHERE id= ?"

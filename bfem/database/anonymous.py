@@ -21,7 +21,6 @@ class AnonymatDatabase:
                 numero INTEGER UNIQUE,
                 matiere_id INTEGER,
                 candidat_id INTEGER,
-                session INTEGER,
                 examen TEXT,
                 FOREIGN KEY (candidat_id) REFERENCES candidats(id),
                 FOREIGN KEY (matiere_id) REFERENCES matieres(id),
@@ -74,7 +73,7 @@ class AnonymatDatabase:
             numero_anonymat = int(candidat_id) * randint(100,10000) + int(matiere_id)  # Génération d'un numéro anonymat unique
             self.db.execute(
                 "INSERT INTO anonymats (numero, matiere_id, candidat_id, session, examen) VALUES (?, ?, ?, ?, ?)",
-                (numero_anonymat, matiere_id, candidat_id, session, examen),
+                (numero_anonymat, matiere_id, candidat_id,examen),
             )
             return numero_anonymat
         except Exception as e:

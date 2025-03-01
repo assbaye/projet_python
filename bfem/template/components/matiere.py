@@ -14,7 +14,7 @@ KV = """
     MDNavigationLayout:
 
         MDScreenManager:
-            id:"screen_manager"
+            id:"screen_manager_matiere"
             MDScreen:
                 MDBoxLayout:
                     orientation:"vertical"
@@ -32,6 +32,10 @@ KV = """
                        
                     ScreenManager:
                         id:screen_manager_current
+                        AddMatiere:
+                            name:"addmatiere"
+                        ListeMatiere:
+                            name:"Liste_matiere"
                 
 """
 

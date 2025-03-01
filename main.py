@@ -7,22 +7,14 @@ from bfem.database.candidat import Candidat
 from bfem.database.matiere import Matiere
 from bfem.database.anonymous import AnonymatDatabase
 from bfem.database.examen import Examen
-
+from bfem.database.livret_scolaire import LivretScolaire
 if __name__ == '__main__':
-    # an= AnonymatDatabase().getAll()
-
-    # print(an)
-    # an= AnonymatDatabase().verifie_anonymat(1,5435,"Session 1")
-    # # print(an)
-    # print(Candidat().get_all_candidate())
-    # print(Matiere().getAll())
-    # print(AnonymatDatabase().getAll())
+   
     
     MyApp().run()
 
-    # interf = Examen().deliverer("Session 1")
-
-    # Examen().add_note(10,4882)
-
-    # print(Examen().get_all_note())
-
+   
+    # print(Examen().getAllnotebyCanidat(1,"Session 1"))
+    # print(LivretScolaire().get_livretscolaire(1))
+    # print(list(Candidat().get_all_candidate()))
+    # print(Examen().get_notes_by_canidate(1,"Session 1"))

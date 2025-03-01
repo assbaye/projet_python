@@ -42,10 +42,10 @@ class ListeMatiere(MDScreen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        scroll_view = MDScrollView(
+        self.scroll_view = MDScrollView(
             pos_hint={"top":0.9}
         )
-        data_tables = MDDataTable(
+        self.data_tables = MDDataTable(
             
             use_pagination=True,
             check=True,
@@ -53,6 +53,7 @@ class ListeMatiere(MDScreen):
                 ("No.", dp(30)),
                 ("Nom", dp(60)),
                 ("Coefficient", dp(40)),
+                ("Bonus", dp(40)),
                
             ],
             row_data=self.getdata(),
@@ -60,16 +61,17 @@ class ListeMatiere(MDScreen):
             sorted_order="ASC",
             elevation=2,
         )
-        data_tables.bind(on_row_press=self.on_row_press)
-        data_tables.bind(on_check_press=self.on_check_press)
-        scroll_view.add_widget(data_tables)
-        self.add_widget(scroll_view)
+        self.data_tables.bind(on_row_press=self.on_row_press)
+        self.data_tables.bind(on_check_press=self.on_check_press)
+        self.scroll_view.add_widget(self.data_tables)
+        self.add_widget(self.scroll_view)
         # self.set_matiere(18)
     
+    def update_table(self):
+        self.data_tables.row_data = self.getdata()
    
     
     def getdata(self):
-
        return Matiere().getAll() 
        
 

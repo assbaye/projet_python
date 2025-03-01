@@ -32,8 +32,12 @@ class AnonymatDatabase:
       
     
     def verifie_anonymat(self,matiere_id,anonymat,session):
-        print(session)
-        return self.db.fetchall("SELECT * FROM anonymats WHERE matiere_id=? and examen=? and numero=?",(matiere_id,session,anonymat ))
+        # print(session)
+        return self.db.fetchall("""
+                                SELECT e.note
+                                FROM anonymats a 
+                                JOIN examens e ON e.anonymat_id =a.numero 
+                                WHERE a.matiere_id=? and a.examen=? and a.numero=?""",(matiere_id,session,anonymat ))
 
     def get_anomonymat_by_matiere(self,matiere_id,session):
         return self.db.fetchall("SELECT * FROM anonymats WHERE matiere_id=? and examen=?",(matiere_id,session ))

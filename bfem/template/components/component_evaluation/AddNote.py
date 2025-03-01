@@ -105,7 +105,7 @@ class AddNote(MDScreen):
                 valited = False
 
         if  valited == False : return 
-        if not AnonymatDatabase().verifie_anonymat(self.matiere,anonymat.text,self.session) :
+        if  AnonymatDatabase().verifie_anonymat(self.matiere,anonymat.text,self.session) == None :
             field = getattr(self.ids,"anonymat")
             field.error = True
             field.helper_text_mode = "on_error"
@@ -122,7 +122,7 @@ class AddNote(MDScreen):
         
         note_value = int(getattr(self.ids, "note").text)
 
-        if not (0 <= note_value <= 20):
+        if 0> note_value > 20:
             field = getattr(self.ids, "note")
             field.error = True
             field.helper_text_mode = "on_error"
@@ -155,7 +155,9 @@ class AddNote(MDScreen):
                 getattr(self.ids, field).text =" "
         
         else:   
-             self.manager.current = "liste_des_notes"
+            liste_screen = self.manager.get_screen("liste_des_notes")
+            liste_screen.getdata()
+            self.manager.current = "liste_des_notes"
 
 
 

@@ -181,46 +181,7 @@ class ListeCandidats(Screen):
 
 
 
-    # def afficher_candidats(self):
-    #     self.ids.candidat_list.clear_widgets()
-    #     allcandidats = Candidat().get_all_candidate()
-        
-    #     for candidat in allcandidats:
-    #         # print(candidat)
-    #         prenom=candidat[1]
-    #         nom=candidat[2] 
-    #         sexe=candidat[5]
-    #         lieu_naissance= candidat[3]
-    #         etablissement=candidat[8] 
-    #         epr_facultative = candidat[6]
-
-    #         card = MDCard(orientation="vertical", size_hint=(0.45, None), size=("350dp", "200dp"),
-    #                       padding="10dp", spacing="10dp", radius=[20, 20, 20, 20],
-    #                       md_bg_color=[0.9, 0.95, 1, 1])  # Bleu très clair
-
-    #         box = MDBoxLayout(orientation="vertical", spacing="5dp")
-
-    #         box.add_widget(MDLabel(text=f"{prenom} {nom}", font_style="H6", bold=True))
-    #         box.add_widget(MDLabel(text=f"{sexe} | {lieu_naissance}", font_style="Caption", theme_text_color="Secondary"))
-    #         box.add_widget(MDLabel(text=f"{etablissement} | {epr_facultative}", font_style="Caption", theme_text_color="Secondary"))
-            
-
-    #         action_box = MDBoxLayout(orientation="horizontal", spacing="10dp")
-
-    #         btn_modifier = MDRaisedButton(text="Modifier", md_bg_color=[0.2, 0.6, 1, 1])
-            
-    #         btn_modifier.bind(on_release=lambda btn, c=candidat: self.modifier_candidat(c))
-    #         btn_details = MDRaisedButton(text="Détails", md_bg_color=[0.2, 0.6, 1, 1])
-
-    #         action_box.add_widget(btn_modifier)
-    #         action_box.add_widget(btn_details)
-
-    #         card.add_widget(box)
-    #         card.add_widget(action_box)
-
-    #         self.ids.candidat_list.add_widget(card)
-
-
+  
 
 class MainApp(MDApp):
     def build(self):

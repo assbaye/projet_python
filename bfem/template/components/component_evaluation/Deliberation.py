@@ -23,9 +23,10 @@ KV ="""
     MDBoxLayout:
         id: contenaire
         size_hint:[1,None]
+        height: dp(3)
         pos_hint: {'top':1}
         MDLabel:
-            text:"Bonjour "
+            text:"Liste Deliberation pour la "+ self.session
             id:head
             # text: 'Ajouter des notes'
             halign:"center"
@@ -64,48 +65,6 @@ class ListDeliberation(MDScreen):
    
     def set_session(self, session):
         self.session = session
-
-    # def getrow(self):
-    #     rows = []
-    #     candidats = Candidat().getAll()  # Récupère tous les candidats
-    #     matieres = [str(mat) for mat in Matiere().getAll()]  # Liste des matières en chaîne de caractères
-        
-    #     for candidat in candidats:
-    #         # Informations de base sur le candidat
-    #         row = [
-    #             str(candidat.id),
-    #             candidat.prenom,
-    #             candidat.nom,
-    #             str(candidat.date_naissance),
-    #             candidat.lieu_naissance,
-    #         ]
-            
-    #         # Ajouter les moyennes du livret
-    #         livret = LivretScolaire().get_by_candidat(candidat.id)
-    #         if livret:
-    #             row.extend([
-    #                 str(livret.tentative),
-    #                 str(livret.moyenne_6),
-    #                 str(livret.moyenne_5),
-    #                 str(livret.moyenne_4),
-    #                 str(livret.moyenne_3),
-    #             ])
-    #         else:
-    #             # Si le livret est absent, remplir avec des espaces vides
-    #             row.extend([" "] * 5)
-            
-    #         # Récupérer les notes pour chaque matière
-    #         notes = Examen().get_notes_by_candidat(candidat.id, self.session)
-    #         notes_dict = {str(note.matiere): str(note.note) for note in notes}
-
-    #         # Vérifier chaque matière et ajouter la note ou un espace vide
-    #         for matiere in matieres:
-    #             row.append(notes_dict.get(matiere, " "))
-
-    #         # Ajouter la ligne complète
-    #         rows.append(row)
-
-    #     return rows
 
     def getdata(self):
         col = [
@@ -177,11 +136,16 @@ class ListDeliberation(MDScreen):
             
             total = 0 if not total else total
 
-            row.append(
-                "Admis" if total > 180 else "Échoué" if total < 153 else "Second tour"
-            )
+            if self.session == "Session 1":
+                row.append(
+                    "Admis" if total > 180 else "Échoué" if total < 153 else "Second tour" 
+                )
+            else:
+                row.append(
+                    "Admis" if 76<=total else "Echoue"
+                )
 
-            # Ajouter la ligne complète
+            
             Rows.append(row)
 
            

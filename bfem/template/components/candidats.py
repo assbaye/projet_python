@@ -6,7 +6,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
 from .component_candidat.AddCandidat import AddCandidat
-from .component_candidat.ListCandidat import ListeCandidats
+from .component_candidat.listCandidat import ListeCandidats
 
 KV = """
 <Candidat> :

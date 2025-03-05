@@ -13,14 +13,14 @@ from kivy.lang import Builder
 from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu
-from kivy.properties import StringProperty,ListProperty
+from kivy.properties import StringProperty, ListProperty
 from kivymd.uix.pickers import MDDatePicker
 from bfem.database.candidat import Candidat
 from bfem.database.livret_scolaire import LivretScolaire
 
 KV = """
-<AddCandidat>:
-    name: "add_candidat"
+<ModifyCandidat>:
+    name: "modify_candidat"
     sexe: "M"
     epreuve_facultative: "Dessin"
     lv2: "LV2"
@@ -36,10 +36,10 @@ KV = """
             spacing: 20
 
             MDLabel:
-                id:state_add
-                halign:"center"
+                id: state_modify
+                halign: "center"
                 size_hint: 1, None
-                height:50
+                height: 50
                 pos_hint: {'top': 1}
 
             ScrollView:
@@ -63,7 +63,6 @@ KV = """
                         mode: "rectangle"
                         on_focus: if self.focus: root.show_date_picker()
                     
-                    
                     MDTextField:
                         id: lieu_naissance
                         hint_text: "Lieu de naissance"
@@ -83,22 +82,20 @@ KV = """
                         id: aptitude_sportive
                         hint_text: "Aptitude Sportive"
                         mode: "rectangle"
-                        on_focus:if self.focus: root.open_menu(self,"aptitude_sportive")
+                        on_focus: if self.focus: root.open_menu(self, "aptitude_sportive")
                     
                     MDTextField:
                         id: sexe
-                        hint_text:"Sexe"
+                        hint_text: "Sexe"
                         mode: "rectangle"
-                        on_focus:if self.focus: root.open_menu(self,"sexe") 
+                        on_focus: if self.focus: root.open_menu(self, "sexe") 
                 
                     MDTextField:
-                        id:epreuve_facultative
-                        hint_text:"Epreuves facultative"
+                        id: epreuve_facultative
+                        hint_text: "Epreuves facultative"
                         mode: "rectangle"
-                        on_focus:if self.focus: root.open_menu(self,"epreuve_facultative") 
+                        on_focus: if self.focus: root.open_menu(self, "epreuve_facultative") 
                 
-                
-
                     MDTextField:
                         id: moyenne_6e
                         hint_text: "Moyenne 6e"
@@ -118,32 +115,19 @@ KV = """
                         id: moyenne_3e
                         hint_text: "Moyenne 3e"
                         mode: "rectangle"
-                    MDTextField:
-                        id:lv2
-                        hint_text:"Pc/lv2"
-                        mode: "rectangle"
-                        on_focus:if self.focus: root.open_menu(self,"lv2") 
-                
                     
-                    # MDRaisedButton:
-                    #     id: lv2
-                    #     text: root.lv2
-                    #     on_release: root.open_menu(self, 'lv2')
-                    # MDDropdownMenu:
-                    #     id:lv2 
                     MDTextField:
-                        id:type_candidat
-                        hint_text:"Type de Candidat"
+                        id: lv2
+                        hint_text: "Pc/lv2"
                         mode: "rectangle"
-                        on_focus:if self.focus: root.open_menu(self,"type_candidat") 
+                        on_focus: if self.focus: root.open_menu(self, "lv2") 
                 
-                    # MDRaisedButton:
-                    #     id: type_candidat
-                    #     text: root.type_candidat
-                    #     on_release: root.open_menu(self, 'type_candidat')
-
-                    
-
+                    MDTextField:
+                        id: type_candidat
+                        hint_text: "Type de Candidat"
+                        mode: "rectangle"
+                        on_focus: if self.focus: root.open_menu(self, "type_candidat") 
+                
                     MDTextField:
                         id: nombre_fois
                         hint_text: "Nombre de fois"
@@ -155,29 +139,29 @@ KV = """
             size_hint_y: None
             height: 60
             MDRaisedButton:
-                text: "Sauvegarder"
-                md_bg_color: [1, 0.6, 0, 1]  # Orange
-                on_release: root.enregistrer_candidat('liste')
+                text: "Annuler"
+                md_bg_color: [0.7, 0.1, 0.1, 1]  # Rouge
+                on_release: root.cancel_modification()
             MDRaisedButton:
-                text: "Sauvegarder et Continuer"
+                text: "Mettre à jour"
                 md_bg_color: [0, 0.7, 0.5, 1]  # Vert
-                on_release: root.enregistrer_candidat('continuer')
+                on_release: root.update_candidat()
 """
 Builder.load_string(KV)
 
-class AddCandidat(MDScreen):
-   
+class ModifyCandidat(MDScreen):
     sexe = StringProperty("M")
     epreuve_facultative = StringProperty("Dessin")
     lv2 = StringProperty("LV2")
     type_candidat = StringProperty("Officiel")
     candidat_id = None  # Stocke l'ID du candidat à modifier
+    livret_id = None  # Stocke l'ID du livret scolaire à modifier
 
-    def __init__(self,*args, **kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         
-  # Initialisation vide
-    def on_kv_post(self,*args):
+    # Initialisation des menus
+    def on_kv_post(self, *args):
         self.menus = {
             "sexe": MDDropdownMenu(
                 caller=self.ids.sexe,
@@ -249,7 +233,7 @@ class AddCandidat(MDScreen):
                 ],
                 width_mult=3,
             ),
-             "aptitude_sportive": MDDropdownMenu(
+            "aptitude_sportive": MDDropdownMenu(
                 caller=self.ids.aptitude_sportive,
                 items=[
                     {
@@ -269,16 +253,12 @@ class AddCandidat(MDScreen):
             ),
         }
        
-    
-   
     def open_menu(self, caller, menu_type):
-       print(menu_type)
-       print(self.menus)
-       if menu_type in self.menus:
-        self.menus[menu_type].caller = caller  # Associez le calle
-        self.menus[menu_type].open()  # Ouvrez le menu
-       else:
-        print(f"Erreur : le menu '{menu_type}' n'existe pas.")
+        if menu_type in self.menus:
+            self.menus[menu_type].caller = caller  # Associez le caller
+            self.menus[menu_type].open()  # Ouvrez le menu
+        else:
+            print(f"Erreur : le menu '{menu_type}' n'existe pas.")
 
     def set_item(self, item_type, value):
         """Définit la valeur sélectionnée dans le menu"""
@@ -286,114 +266,169 @@ class AddCandidat(MDScreen):
         self.ids[item_type].text = value
         self.menus[item_type].dismiss()
 
-    def remplir_formulaire(self, candidat):
-        """Remplit le formulaire avec les infos du candidat à modifier"""
-        # self.candidat_id = candidat[0]  # Stocke l'ID pour la mise à jour
-        self.ids.prenom.text = candidat[1]
+    def load_candidat_data(self, candidat_id):
+        """Charge les données du candidat à modifier"""
+        self.candidat_id = candidat_id
+        
+        try:
+            # Récupérer les données du candidat
+            interface_candidat = Candidat()
+            candidat_data = interface_candidat.get_candidat_by_id(candidat_id)
+            
+            if not candidat_data:
+                self.ids.state_modify.text = "Erreur: Candidat non trouvé"
+                return
+            
+            # Récupérer les données du livret scolaire
+            interface_livret = LivretScolaire()
+            livret_data = interface_livret.get_livret_by_candidat_id(candidat_id)
+            
+            if not livret_data:
+                self.ids.state_modify.text = "Erreur: Livret scolaire non trouvé"
+                return
+                
+            self.livret_id = livret_data[0][0]  # Supposant que l'ID est le premier élément
+            
+            # Remplir le formulaire avec les données
+            self.remplir_formulaire(candidat_data[0], livret_data[0])
+            
+        except Exception as e:
+            print(f"Erreur lors du chargement des données: {e}")
+            self.ids.state_modify.text = f"Erreur: {str(e)}"
+
+    def remplir_formulaire(self, candidat, livret):
+        """Remplit le formulaire avec les infos du candidat et du livret scolaire"""
+        # Données du candidat
+        self.ids.prenom.text = candidat[1]  # ajuster les indices selon votre structure de données
         self.ids.nom.text = candidat[2]
-        self.sexe = candidat[3]
+        self.ids.sexe.text = "M" if candidat[3] == "H" else "F"
+        self.sexe = "Masculin" if candidat[3] == "H" else "Féminin"
         self.ids.date_naissance.text = candidat[4]
         self.ids.lieu_naissance.text = candidat[5]
         self.ids.nationalite.text = candidat[6]
         self.ids.etablissement.text = candidat[7]
         self.ids.aptitude_sportive.text = candidat[8]
+        self.ids.epreuve_facultative.text = candidat[9]
         self.epreuve_facultative = candidat[9]
-        self.ids.moyenne_6e.text = candidat[10]
-        self.ids.moyenne_5e.text = candidat[11]
-        self.ids.moyenne_4e.text = candidat[12]
-        self.ids.moyenne_3e.text = candidat[13]
-        self.lv2 = candidat[14]
-        self.type_candidat = candidat[15]
-        self.ids.nombre_fois.text = candidat[16]
-
-        # Mise à jour des menus dropdown
-        self.menus["sexe"].caller.text = self.sexe
-        self.menus["epreuve_facultative"].caller.text = self.epreuve_facultative
-        self.menus["lv2"].caller.text = self.lv2
-        self.menus["type_candidat"].caller.text = self.type_candidat
+        self.ids.lv2.text = candidat[10]
+        self.lv2 = candidat[10]
+        self.ids.type_candidat.text = candidat[11]
+        self.type_candidat = candidat[11]
+        
+        # Données du livret scolaire
+        self.ids.nombre_fois.text = str(livret[1])
+        self.ids.moyenne_6e.text = str(livret[2])
+        self.ids.moyenne_5e.text = str(livret[3])
+        self.ids.moyenne_4e.text = str(livret[4])
+        self.ids.moyenne_3e.text = str(livret[5])
 
     def show_date_picker(self):
+        """Affiche le sélecteur de date"""
         date_dialog = MDDatePicker()
         date_dialog.bind(on_save=self.on_date_selected)
         date_dialog.open()
 
     def on_date_selected(self, instance, value, date_range):
-     self.ids.date_naissance.text = str(value)
+        """Traite la date sélectionnée"""
+        self.ids.date_naissance.text = str(value)
 
-    def enregistrer_candidat(self,action):
-        """Enregistre ou met à jour un candidat dans la base de données"""
-        
+    def validate_fields(self):
+        """Valide les champs du formulaire"""
         valited = True
 
+        # Vérifier que tous les champs sont remplis
         for field in [
-        "prenom", "nom","type_candidat","epreuve_facultative","date_naissance", "lieu_naissance","nationalite", "etablissement", "aptitude_sportive","moyenne_6e", "moyenne_5e","sexe","lv2","moyenne_4e", "moyenne_3e", "nombre_fois"]:
+            "prenom", "nom", "type_candidat", "epreuve_facultative", "date_naissance", 
+            "lieu_naissance", "nationalite", "etablissement", "aptitude_sportive",
+            "moyenne_6e", "moyenne_5e", "sexe", "lv2", "moyenne_4e", "moyenne_3e", "nombre_fois"
+        ]:
             if getattr(self.ids, field).text == "":
-                field = getattr(self.ids,field)
-                field.error = True
-                field.helper_text_mode = "on_error"
-                field.helper_text = "Veuillez Remplir le champs"
+                field_obj = getattr(self.ids, field)
+                field_obj.error = True
+                field_obj.helper_text_mode = "on_error"
+                field_obj.helper_text = "Veuillez remplir ce champ"
                 valited = False
 
-        if valited:    
-        
-            for field in [ "moyenne_6e", "moyenne_5e", "moyenne_4e", "moyenne_3e"]:
-                if int(getattr(self.ids, field).text) > 20 or int(getattr(self.ids, field).text)< 0:
-                    field = setattr(self.ids,field,"")
-                    field.error = True
-                    field.helper_text_mode = "on_error"
-                    field.helper_text = "Moyenne doit etre entre 0 et 20"
+        # Vérifier que les moyennes sont entre 0 et 20
+        if valited:
+            for field in ["moyenne_6e", "moyenne_5e", "moyenne_4e", "moyenne_3e"]:
+                try:
+                    value = float(getattr(self.ids, field).text)
+                    if value > 20 or value < 0:
+                        field_obj = getattr(self.ids, field)
+                        field_obj.error = True
+                        field_obj.helper_text_mode = "on_error"
+                        field_obj.helper_text = "Moyenne doit être entre 0 et 20"
+                        valited = False
+                except ValueError:
+                    field_obj = getattr(self.ids, field)
+                    field_obj.error = True
+                    field_obj.helper_text_mode = "on_error"
+                    field_obj.helper_text = "Veuillez entrer un nombre valide"
                     valited = False
 
-        if valited:
+        return valited
 
+    def update_candidat(self):
+        """Met à jour les informations du candidat et du livret scolaire"""
+        if not self.validate_fields():
+            return
+            
+        try:
+            # Préparer les données du candidat
             prenom = self.ids.prenom.text
             nom = self.ids.nom.text
-            sexe = "H" if self.sexe == "Masculin" else  "F"
+            sexe = "H" if self.sexe == "Masculin" else "F"
             date_naissance = self.ids.date_naissance.text
             lieu_naissance = self.ids.lieu_naissance.text
             nationalite = self.ids.nationalite.text
             etablissement = self.ids.etablissement.text
             aptitude_sportive = self.ids.aptitude_sportive.text
             epr_facultative = self.epreuve_facultative
+            lv2 = self.lv2
+            type_candidat = self.type_candidat
+            
+            # Préparer les données du livret scolaire
+            nombre_fois = self.ids.nombre_fois.text
             moyenne_6e = self.ids.moyenne_6e.text
             moyenne_5e = self.ids.moyenne_5e.text
             moyenne_4e = self.ids.moyenne_4e.text
             moyenne_3e = self.ids.moyenne_3e.text
-            lv2 = self.lv2
-            type_candidat = self.type_candidat
-            nombre_fois = self.ids.nombre_fois.text
-            try:
-                interface_candidat = Candidat()
-                last_candidat = interface_candidat.add_candidate(
-                prenom,nom,date_naissance,lieu_naissance,sexe,nationalite,epr_facultative,etablissement,aptitude_sportive,lv2,type_candidat)
-                
-                interface_livret_scolaire = LivretScolaire()
-                interface_livret_scolaire.add_livretscolaire(nombre_fois,moyenne_6e,moyenne_5e,moyenne_4e,moyenne_3e,last_candidat[0][0])
-                
-               
-            except Exception as e:
-                print(e)
-                self.ids.state_add.text = " Erreur"
-           
-
-        if action == "continuer":
-            self.ids.state_add.text= "Candidat bien ajouter"
+            
+            # Mettre à jour le candidat
+            interface_candidat = Candidat()
+            interface_candidat.update_candidat(
+                self.candidat_id, prenom, nom, date_naissance, lieu_naissance, 
+                sexe, nationalite, epr_facultative, etablissement, 
+                aptitude_sportive, lv2, type_candidat
+            )
+            
+            # Mettre à jour le livret scolaire
+            interface_livret = LivretScolaire()
+            interface_livret.update_livret(
+                self.livret_id, nombre_fois, moyenne_6e, 
+                moyenne_5e, moyenne_4e, moyenne_3e
+            )
+            
+            # Afficher le message de succès
+            self.ids.state_modify.text = "Candidat modifié avec succès"
+            
+            # Mettre à jour la liste des candidats
             liste_screen = self.manager.get_screen("ListeCandidat")
             liste_screen.load_candidats()
-            for field in ["prenom", "nom","type_candidat","epreuve_facultative","date_naissance", "lieu_naissance","nationalite", "etablissement", "aptitude_sportive","moyenne_6e", "moyenne_5e","sexe","lv2","moyenne_4e", "moyenne_3e", "nombre_fois"]: 
-                getattr(self.ids, field).text =""
-          
-        elif action == "liste":
-            self.manager.current = "ListeCandidat"
-           
-           
+            
+            # Retourner à la liste des candidats après un court délai
+            from kivy.clock import Clock
+            Clock.schedule_once(lambda dt: self.go_to_list(), 1.5)
+            
+        except Exception as e:
+            print(f"Erreur lors de la mise à jour: {e}")
+            self.ids.state_modify.text = f"Erreur de mise à jour: {str(e)}"
 
+    def cancel_modification(self):
+        """Annule la modification et retourne à la liste des candidats"""
+        self.go_to_list()
 
-# class MyApp(MDApp):
-#     def build(self):
-#         self.theme_cls.primary_palette = "Blue"
-#         return AddCandidat()
-
-
-# if __name__ == "__main__":
-#     MyApp().run()
+    def go_to_list(self):
+        """Retourne à l'écran de liste des candidats"""
+        self.manager.current = "ListeCandidat"

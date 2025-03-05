@@ -182,7 +182,99 @@ class Candidat:
        self.db.execute(query,(values))
 
       
-          
-
+    # Fonction pour imprimer la liste des candidats
+    
+    
+    def imprimer_liste_candidats(self, output_file="liste_candidats.pdf"):
+        # Récupérer tous les candidats
+        candidates = self.get_all_candidate()
+        
+        # Créer le document PDF
+        doc = SimpleDocTemplate(
+            output_file,
+            pagesize=letter,
+            rightMargin=inch/2,
+            leftMargin=inch/2,
+            topMargin=inch,
+            bottomMargin=inch
+        )
+        
+        # Liste pour stocker les éléments du PDF
+        elements = []
+        
+        # Styles
+        styles = getSampleStyleSheet()
+        title_style = ParagraphStyle(
+            'CustomTitle',
+            parent=styles['Heading1'],
+            fontSize=16,
+            spaceAfter=20,
+            alignment=1  # Center alignment
+        )
+        subtitle_style = ParagraphStyle(
+            'CustomTitle',
+            parent=styles['Heading2'],
+            fontSize=14,
+            spaceAfter=30,
+            alignment=1  # Center alignment
+        )
+        
+        # Titre
+        elements.append(Paragraph("BFEM SENEGAL SESSION 2025",title_style))
+        elements.append(Spacer(1, 8))
+        elements.append(Paragraph("Liste des Candidats", subtitle_style))
+        elements.append(Spacer(1, 12))
+        
+        # En-têtes du tableau
+        headers = ['N°', 'Prénom', 'Nom', 'Date Naissance', 'Lieu', 'Sexe', 'Nationalité', 
+                'Épreuve Facultative', 'Établissement']
+        
+        # Données du tableau
+        data = [headers]
+        for candidate in candidates:
+            row = [
+                str(candidate[0]),  # ID
+                candidate[1],       # Nom
+                candidate[2],       # Prénom
+                candidate[3],       # Date naissance
+                candidate[4],       # Lieu
+                candidate[5],       # Sexe
+                candidate[6],       # Nationalité
+                candidate[8],       # Épreuve facultative
+                candidate[9],       # Établissement
+            ]
+            data.append(row)
+        
+        # Créer le tableau
+        table = Table(data, repeatRows=1)
+        
+        # Style du tableau
+        table_style = TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+            ('FONTSIZE', (0, 1), (-1, -1), 10),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ])
+        table.setStyle(table_style)
+        
+        elements.append(table)
+        
+        # Générer le PDF
+        try:
+            doc.build(elements)
+            return True
+        except Exception as e:
+            print(f"Erreur lors de la génération du PDF : {str(e)}")
+            return False
+        
 
 

@@ -97,7 +97,7 @@ KV = """
 
         MDRaisedButton:
             text: "Détails"
-            on_release: root.on_details()
+            on_release: root.voir_details_candidat()
     """
 Builder.load_string(KV)
 
@@ -122,10 +122,11 @@ class CandidatCard(RecycleDataViewBehavior, MDCard):
     def on_modify(self):
         print(f"Modification du candidat : {self.candidat}")
 
-    def on_details(self):
-        print(f"Détails du candidat : {self.candidat}")
+    # def on_details(self):
+    #     print(f"Détails du candidat : {self.candidat}")
 
 class ListeCandidats(Screen):
+    
 
     candidats = ListProperty([])
 
@@ -178,6 +179,15 @@ class ListeCandidats(Screen):
             self.manager.current = "AddCandidat"
        else:
             print("Erreur : Aucun candidat sélectionné.")
+            
+    def voir_details_candidat(self, candidat_id):
+        """Ouvre l'écran de détails pour un candidat spécifique"""
+        # Récupérer l'écran de détails
+        detail_screen = self.manager.get_screen("detail_candidat")
+        # Charger les données du candidat
+        detail_screen.load_candidat_data(candidat_id)
+        # Naviguer vers l'écran de détails
+        self.manager.current = "detail_candidat"
 
 
 

@@ -26,7 +26,7 @@ KV ="""
         height: dp(3)
         pos_hint: {'top':1}
         MDLabel:
-            text:"Liste Deliberation pour la "+ self.session
+            # text:"Liste Deliberation pour la "+ self.session
             id:head
             # text: 'Ajouter des notes'
             halign:"center"

@@ -20,7 +20,7 @@ class Matiere:
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nom_matiere VARCHAR(125),
                     coefficient INTEGER,
-                    UNIQUE(nom,coefficient)
+                    UNIQUE(nom_matiere,coefficient)
                 )
             
             """
